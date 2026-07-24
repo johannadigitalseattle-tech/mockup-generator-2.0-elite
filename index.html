@@ -1,0 +1,1543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mockup Prompt Generator — Johanna Digital Seattle</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--coral:#EC4899;--teal:#9333EA;--yellow:#F0ABFC;--pink:#FBCFE8;--pink-wash:#FDF2F8;--dark:#1a1a1a;--cream:#FDF4FF;--white:#fff;--gray:#6B21A8;--border:#E9D5FF}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);min-height:100vh;overflow-x:hidden}
+/* LANG TOGGLE */
+.lang-bar{max-width:860px;margin:0 auto;padding:14px 20px 0;display:flex;justify-content:flex-end}
+.lang-toggle{display:flex;border-radius:30px;overflow:hidden;border:1.5px solid #E9D5FF;background:#fff;box-shadow:0 2px 8px rgba(147,51,234,.1)}
+.lang-btn{padding:6px 18px;font-size:12px;font-weight:700;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;background:transparent;color:#9333EA;transition:all .2s;letter-spacing:.05em}
+.lang-btn.on{background:#EC4899;color:#fff;border-radius:30px}
+/* HEADER */
+.hdr-wrap{max-width:860px;margin:0 auto;padding:10px 20px 0}
+.hdr{background:#000;padding:0;position:relative;overflow:hidden;border-radius:18px;border:2px solid #111;box-shadow:0 6px 28px rgba(0,0,0,.35)}
+.hdr-inner{padding:36px 28px 32px;position:relative;z-index:2}
+.hdr::before{content:'';position:absolute;top:-50px;right:-50px;width:280px;height:280px;background:#EC4899;border-radius:50%;opacity:.08}
+.hdr::after{content:'';position:absolute;bottom:-60px;left:8%;width:200px;height:200px;background:#9333EA;border-radius:50%;opacity:.1}
+.hdr-tag{display:inline-block;background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:5px 14px;border-radius:40px;margin-bottom:14px;border:1.5px solid rgba(255,255,255,.2)}
+.hdr h1{font-family:'Playfair Display',serif;font-size:clamp(24px,5vw,42px);font-weight:900;color:#fff;line-height:1.15;margin-bottom:10px}
+.hdr h1 em{color:#EC4899;font-style:normal}
+.hdr p{font-size:14px;color:rgba(255,255,255,.6);line-height:1.7;max-width:520px}
+.dots{display:flex;gap:8px;margin-top:16px}
+.dot{width:10px;height:10px;border-radius:50%}
+/* MAIN */
+.main{max-width:820px;margin:0 auto;padding:24px 20px 56px}
+/* STEP LABEL */
+.step-label{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.step-num{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0}
+.sn1{background:#EC4899}.sn2{background:#9333EA}.sn3{background:#F0ABFC;color:#6B21A8}
+.sn4{background:#FBCFE8;color:#9D174D}.sn5{background:#EC4899}.sn6{background:#9333EA}.sn7{background:#1a1a1a}
+.step-title{font-size:15px;font-weight:700;color:var(--dark)}
+.step-sub{font-size:11px;color:var(--gray)}
+/* CARD */
+.card{background:#fff;border-radius:20px;padding:24px;margin-bottom:18px;border:1.5px solid var(--border);box-shadow:0 2px 16px rgba(232,99,90,.06);animation:up .35s ease both}
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.divider{border:none;border-top:2px solid var(--pink-wash);margin-bottom:18px}
+/* GRIDS */
+.g2{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.g5{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+@media(max-width:520px){.g3,.g4,.g5{grid-template-columns:repeat(2,1fr)}.g2{grid-template-columns:1fr}}
+/* OPTION BUTTON */
+.opt{padding:12px 8px;border-radius:12px;border:2px solid #e8ddd9;background:#fff;cursor:pointer;transition:all .18s;text-align:center;font-family:'DM Sans',sans-serif;width:100%}
+.opt:hover{border-color:var(--coral);background:#FEF0EE}
+.opt.on{border-color:var(--coral);background:#FEF0EE;box-shadow:0 0 0 3px rgba(232,99,90,.13)}
+.opt-ico{font-size:22px;margin-bottom:5px;display:block}
+.opt-lbl{font-size:12px;font-weight:600;color:var(--dark);line-height:1.3;display:block}
+.opt-sub{font-size:10px;color:var(--gray);display:block;margin-top:2px}
+/* DYNAMIC */
+.dyn{display:none}.dyn.show{display:block}
+/* CUSTOM SIZE */
+.cbox{margin-top:14px;padding:16px;background:var(--pink-wash);border-radius:12px;border:1.5px dashed #E0A89E;display:none}
+.cbox.show{display:block}
+.crow{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap}
+.ig{flex:1;min-width:70px}
+.ig label{display:block;font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px}
+.ig input{width:100%;padding:9px 11px;border-radius:9px;border:1.5px solid #e0d4cf;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;background:#fff;color:var(--dark)}
+.ig input:focus{border-color:var(--coral)}
+.sep{font-size:16px;color:var(--gray);padding-bottom:8px;font-weight:700}
+.utog{display:flex;border-radius:9px;overflow:hidden;border:1.5px solid #e0d4cf}
+.ubtn{padding:9px 14px;font-size:13px;font-weight:600;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;background:#fff;color:var(--gray);transition:all .2s}
+.ubtn.on{background:var(--coral);color:#fff}
+.cres{margin-top:10px;padding:9px 13px;background:#fff;border-radius:8px;border:1.5px solid var(--teal);font-size:13px;color:var(--teal);font-weight:600;display:none}
+.cres.show{display:block}
+/* SWATCHES */
+.swatch-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px}
+.swatch{width:38px;height:38px;border-radius:50%;border:3px solid transparent;cursor:pointer;transition:all .2s}
+.swatch.on{border-color:var(--dark);transform:scale(1.15)}
+.swatch-label{font-size:10px;color:var(--gray);text-align:center;margin-top:3px;display:block;width:38px}
+/* SKIN */
+.skin-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+.skin{width:36px;height:36px;border-radius:50%;border:3px solid transparent;cursor:pointer;transition:all .2s}
+.skin.on{border-color:var(--dark);transform:scale(1.15)}
+/* PILLS */
+.pill-row{display:flex;flex-wrap:wrap;gap:8px}
+.pill{padding:8px 18px;border-radius:40px;border:2px solid #e8ddd9;background:#fff;cursor:pointer;font-size:13px;font-weight:600;color:var(--gray);transition:all .18s;font-family:'DM Sans',sans-serif}
+.pill:hover{border-color:var(--coral);color:var(--coral)}
+.pill.on{border-color:var(--coral);background:var(--coral);color:#fff}
+/* MINI LABEL */
+.mlbl{font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;display:block}
+/* BUNDLE */
+.bundle-dropdown{position:relative;margin-bottom:4px}
+.bundle-trigger{width:100%;padding:10px 16px;border-radius:10px;border:1.5px solid var(--border);background:#fff;font-size:13px;font-weight:600;color:var(--dark);cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-family:'DM Sans',sans-serif;transition:border .2s}
+.bundle-trigger:hover,.bundle-trigger.open{border-color:var(--coral)}
+.bundle-trigger.open{border-bottom-left-radius:0;border-bottom-right-radius:0}
+.bundle-menu{display:none;border:1.5px solid var(--coral);border-top:none;border-radius:0 0 10px 10px;background:#fff;padding:8px 12px;margin-bottom:10px}
+.bundle-menu.show{display:block}
+.bundle-item{display:flex;align-items:center;gap:8px;padding:5px 2px;cursor:pointer;font-size:13px;color:var(--dark);font-weight:500;border-radius:6px;transition:background .15s}
+.bundle-item:hover{background:var(--pink-wash)}
+.bundle-item input[type=checkbox]{accent-color:var(--coral);width:15px;height:15px;cursor:pointer}
+.bundle-all{display:flex;justify-content:space-between;align-items:center;padding:6px 2px 8px;border-bottom:1px solid var(--border);margin-bottom:6px}
+.bundle-all-lbl{font-size:12px;font-weight:700;color:var(--coral);text-transform:uppercase;letter-spacing:.07em}
+.bundle-all-btn{font-size:11px;font-weight:700;color:var(--teal);background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;text-decoration:underline}
+.bundle-selected{font-size:12px;color:var(--gray);margin-top:8px;font-style:italic}
+/* BUTTONS */
+.btn-row{display:flex;justify-content:center;gap:12px;margin:24px 0 0;flex-wrap:wrap}
+.gen-btn{display:inline-flex;align-items:center;gap:10px;background:#EC4899;color:#fff;font-family:'Playfair Display',serif;font-size:17px;font-weight:700;padding:16px 48px;border-radius:60px;border:none;cursor:pointer;transition:all .25s;box-shadow:0 6px 28px rgba(236,72,153,.38)}
+.gen-btn:hover{transform:translateY(-2px);box-shadow:0 10px 36px rgba(236,72,153,.5);filter:brightness(1.05)}
+.clr-btn{display:inline-flex;align-items:center;gap:8px;background:transparent;color:#9333EA;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;padding:16px 28px;border-radius:60px;border:2px solid #E9D5FF;cursor:pointer;transition:all .25s}
+.clr-btn:hover{border-color:#EC4899;color:#EC4899;background:#FDF2F8}
+/* RESULTS */
+.results{margin-top:28px;display:none}
+.results.show{display:block}
+.res-hdr{text-align:center;margin-bottom:22px}
+.res-hdr h2{font-family:'Playfair Display',serif;font-size:26px;font-weight:900;color:var(--dark)}
+.res-hdr p{font-size:13px;color:#9333EA;margin-top:4px}
+.pcard{border-radius:20px;padding:24px;margin-bottom:16px}
+.pc-g{background:#FAF5FF;border:2px solid #9333EA}
+.pc-gr{background:#FDF2F8;border:2px solid #EC4899}
+.pc-mj{background:#1a1a1a;border:2px solid #F0ABFC}
+.pbadge{display:inline-flex;align-items:center;gap:6px;padding:4px 13px;border-radius:40px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px}
+.bg-t{background:#9333EA;color:#fff}.bg-c{background:#EC4899;color:#fff}.bg-y{background:#F0ABFC;color:#6B21A8}
+.ptitle{font-size:14px;font-weight:700;color:var(--dark);margin-bottom:2px}
+.pc-mj .ptitle{color:#fff}
+.pdesc{font-size:12px;color:#9333EA;margin-bottom:12px}
+.pc-mj .pdesc{color:rgba(255,255,255,.5)}
+.ptext{background:#fff;border-radius:11px;padding:15px;font-size:12.5px;line-height:1.8;color:#333;white-space:pre-wrap;word-break:break-word;border:1.5px solid rgba(0,0,0,.06);margin-bottom:12px}
+.pc-mj .ptext{background:rgba(255,255,255,.07);color:rgba(255,255,255,.9);border-color:rgba(255,255,255,.1)}
+.cpbtn{display:inline-flex;align-items:center;gap:7px;padding:10px 22px;border-radius:40px;font-size:13px;font-weight:700;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;transition:all .2s}
+.cp-t{background:#9333EA;color:#fff}.cp-c{background:#EC4899;color:#fff}.cp-y{background:#F0ABFC;color:#6B21A8}
+.cpbtn:hover{opacity:.85;transform:translateY(-1px)}
+/* FOOTER */
+.footer{max-width:860px;margin:0 auto;padding:0 20px 24px}
+.footer-inner{border-top:1px solid #E9D5FF;padding-top:16px;text-align:center}
+.footer-name{font-size:13px;font-weight:700;background:linear-gradient(90deg,#EC4899,#9333EA);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:inline-block;margin-bottom:8px}
+.footer-follow{font-size:10px;color:#9333EA;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.footer-socials{display:flex;justify-content:center;gap:8px;margin-bottom:10px}
+.fsoc{display:inline-flex;align-items:center;gap:5px;padding:5px 14px;border-radius:40px;border:1.5px solid #E9D5FF;background:#fff;font-size:11px;font-weight:600;color:#9333EA;text-decoration:none;transition:border-color .2s,color .2s}
+.fsoc:hover{border-color:#EC4899;color:#EC4899}
+.footer-legal{font-size:10px;color:#bbb;line-height:1.8}
+.footer-legal a{color:#EC4899;text-decoration:none}
+
+
+
+</style>
+</head>
+<body>
+
+
+
+<!-- LANG TOGGLE -->
+<div class="lang-bar">
+  <div class="lang-toggle">
+    <button class="lang-btn on" id="btnEN" onclick="setLang('en')">🌐 EN</button>
+    <button class="lang-btn" id="btnES" onclick="setLang('es')">ES</button>
+  </div>
+</div>
+
+<!-- HEADER -->
+<div class="hdr-wrap">
+<div class="hdr">
+  <div class="hdr-inner">
+    <div class="hdr-tag" data-t="hdrTag">✦ Exclusive Tool — Johanna Digital Seattle</div>
+    <h1>Mockup Prompt<br><em>Generator</em></h1>
+    <p id="hdrDesc">Generate hyper-realistic prompts for any product. Compatible with Gemini, Grok, ChatGPT & Midjourney.</p>
+    <div class="dots">
+      <div class="dot" style="background:#fff;opacity:.9"></div>
+      <div class="dot" style="background:var(--yellow)"></div>
+      <div class="dot" style="background:#fff;opacity:.5"></div>
+      <div class="dot" style="background:var(--teal)"></div>
+    </div>
+  
+  </div>
+  <img src="https://i.imgur.com/5m3JIwi.png" style="position:absolute;right:-10px;top:-10px;width:260px;opacity:.95;pointer-events:none;z-index:3" alt="mockup examples">
+</div>
+</div>
+
+<div class="main">
+
+  <!-- STEP 1 -->
+  <div class="card">
+    <div class="step-label"><div class="step-num sn1">1</div><div><div class="step-title" data-t="s1title">Product Type</div><div class="step-sub" data-t="s1sub">What product are you showcasing?</div></div></div>
+    <hr class="divider">
+    <div class="g4">
+      <button class="opt on" onclick="selProd(this,'notebook')"><span class="opt-ico">📓</span><span class="opt-lbl" data-t="pNotebook">Notebook</span><span class="opt-sub">KDP</span></button>
+      <button class="opt" onclick="selProd(this,'book')"><span class="opt-ico">📗</span><span class="opt-lbl" data-t="pBook">Book</span><span class="opt-sub">KDP</span></button>
+      <button class="opt" onclick="selProd(this,'tshirt')"><span class="opt-ico">👕</span><span class="opt-lbl" data-t="pTshirt">T-Shirt</span><span class="opt-sub" data-t="pTshirtSub">T-shirt</span></button>
+      <button class="opt" onclick="selProd(this,'hoodie')"><span class="opt-ico">🧥</span><span class="opt-lbl" data-t="pHoodie">Hoodie</span><span class="opt-sub" data-t="pHoodieSub">Sweatshirt</span></button>
+      <button class="opt" onclick="selProd(this,'mug')"><span class="opt-ico">☕</span><span class="opt-lbl" data-t="pMug">Mug</span><span class="opt-sub" data-t="pMugSub">Mug</span></button>
+      <button class="opt" onclick="selProd(this,'sticker')"><span class="opt-ico">🪧</span><span class="opt-lbl" data-t="pSticker">Sticker</span><span class="opt-sub">Die cut</span></button>
+      <button class="opt" onclick="selProd(this,'totebag')"><span class="opt-ico">🛍️</span><span class="opt-lbl" data-t="pTote">Tote Bag</span><span class="opt-sub" data-t="pToteSub">Bag</span></button>
+      <button class="opt" onclick="selProd(this,'candle')"><span class="opt-ico">🕯️</span><span class="opt-lbl" data-t="pCandle">Candle</span><span class="opt-sub" data-t="pCandleSub">Candle</span></button>
+      <button class="opt" onclick="selProd(this,'bundle')"><span class="opt-ico">🎁</span><span class="opt-lbl" data-t="pBundle">Bundle</span><span class="opt-sub" data-t="pBundleSub">Multiple products</span></button>
+      <button class="opt" onclick="selProd(this,'digital')" style="border-color:var(--teal)"><span class="opt-ico">💻</span><span class="opt-lbl" data-t="pDigital" style="color:var(--teal)">Digital Product</span><span class="opt-sub" data-t="pDigitalSub">Screen mockup</span></button>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="card">
+    <div class="step-label"><div class="step-num sn2">2</div><div><div class="step-title" data-t="s2title">Destination Platform</div><div class="step-sub" data-t="s2sub">Where will you use this mockup?</div></div></div>
+    <hr class="divider">
+    <div class="pill-row">
+      <button class="pill on" onclick="selPill(this,'platform','amazon')" data-t="plAmazon">Amazon KDP</button>
+      <button class="pill" onclick="selPill(this,'platform','etsy')" data-t="plEtsy">Etsy</button>
+      <button class="pill" onclick="selPill(this,'platform','instagram')" data-t="plIG">Instagram</button>
+      <button class="pill" onclick="selPill(this,'platform','tiktok')" data-t="plTT">TikTok</button>
+      <button class="pill" onclick="selPill(this,'platform','pinterest')" data-t="plPIN">Pinterest</button>
+      <button class="pill" onclick="selPill(this,'platform','facebook')" data-t="plFB">Facebook Ads</button>
+      <button class="pill" onclick="selPill(this,'platform','web')" data-t="plWeb">Website</button>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="card">
+    <div class="step-label"><div class="step-num sn3">3</div><div><div class="step-title" data-t="s3title">Product Details</div><div class="step-sub" data-t="s3sub">Specific options for your product</div></div></div>
+    <hr class="divider">
+
+    <!-- NOTEBOOK -->
+    <div class="dyn show" id="dyn-notebook">
+      <span class="mlbl" data-t="nbBinding">Binding type</span>
+      <div class="g2" style="margin-bottom:16px">
+        <button class="opt on" onclick="selNbBinding(this,'kdp')"><span class="opt-ico">📚</span><span class="opt-lbl" data-t="bindKdp">KDP / Perfect Bound</span><span class="opt-sub" data-t="bindKdpSub">Flat spine — Amazon KDP ✓</span></button>
+        <button class="opt" onclick="selNbBinding(this,'spiral')"><span class="opt-ico">🌀</span><span class="opt-lbl" data-t="bindSpiral">Spiral / Wire-O</span><span class="opt-sub" data-t="bindSpiralSub">Metal spiral binding</span></button>
+      </div>
+      <span class="mlbl" data-t="nbSize">Notebook size</span>
+      <div class="g2">
+        <button class="opt on" onclick="selGroup(this,'size','7.5 x 9.25 inches')"><span class="opt-ico">📓</span><span class="opt-lbl">Composition</span><span class="opt-sub">7.5 × 9.25 in</span></button>
+        <button class="opt" onclick="selGroup(this,'size','8.5 x 8.5 inches')"><span class="opt-ico">📒</span><span class="opt-lbl">Square</span><span class="opt-sub">8.5 × 8.5 in</span></button>
+        <button class="opt" onclick="selGroup(this,'size','custom')"><span class="opt-ico">✏️</span><span class="opt-lbl" data-t="customSize">Custom Size</span><span class="opt-sub" data-t="customSizeSub">Your measurement</span></button>
+      </div>
+      <div id="cbox-notebook" class="cbox">
+        <div class="crow">
+          <div class="ig"><label data-t="width">Width</label><input type="number" id="cw" placeholder="0.0" step="0.1" oninput="convertSize()"></div>
+          <div class="sep">×</div>
+          <div class="ig"><label data-t="height">Height</label><input type="number" id="ch" placeholder="0.0" step="0.1" oninput="convertSize()"></div>
+          <div class="ig" style="max-width:100px"><label data-t="unit">Unit</label>
+            <div class="utog"><button class="ubtn on" id="btnIn" onclick="setUnit('in')">in</button><button class="ubtn" id="btnCm" onclick="setUnit('cm')">cm</button></div>
+          </div>
+        </div>
+        <div id="cres" class="cres"></div>
+      </div>
+    </div>
+
+    <!-- BOOK -->
+    <div class="dyn" id="dyn-book">
+      <span class="mlbl" data-t="bookSize">Book size</span>
+      <div class="g2">
+        <button class="opt on" onclick="selGroup(this,'size','6 x 9 inches')"><span class="opt-ico">📗</span><span class="opt-lbl">Standard Book</span><span class="opt-sub">6 × 9 in</span></button>
+        <button class="opt" onclick="selGroup(this,'size','8.5 x 11 inches')"><span class="opt-ico">📘</span><span class="opt-lbl">Large Book</span><span class="opt-sub">8.5 × 11 in</span></button>
+        <button class="opt" onclick="selGroup(this,'size','5 x 8 inches')"><span class="opt-ico">📙</span><span class="opt-lbl">Small Book</span><span class="opt-sub">5 × 8 in</span></button>
+        <button class="opt" onclick="selGroup(this,'size','custom')"><span class="opt-ico">✏️</span><span class="opt-lbl" data-t="customSize">Custom Size</span><span class="opt-sub" data-t="customSizeSub">Your measurement</span></button>
+      </div>
+    </div>
+
+    <!-- TSHIRT -->
+    <div class="dyn" id="dyn-tshirt">
+      <span class="mlbl" data-t="brand">Brand</span>
+      <div class="g4" style="margin-bottom:16px">
+        <button class="opt on" onclick="selGroup(this,'brand','Bella Canvas')"><span class="opt-ico">✨</span><span class="opt-lbl">Bella Canvas</span></button>
+        <button class="opt" onclick="selGroup(this,'brand','Comfort Colors')"><span class="opt-ico">🎨</span><span class="opt-lbl">Comfort Colors</span></button>
+        <button class="opt" onclick="selGroup(this,'brand','Gildan')"><span class="opt-ico">👕</span><span class="opt-lbl">Gildan</span></button>
+        <button class="opt" onclick="selGroup(this,'brand','Next Level')"><span class="opt-ico">⭐</span><span class="opt-lbl">Next Level</span></button>
+      </div>
+      <span class="mlbl" data-t="shirtColor">Shirt color</span>
+      <div class="swatch-row">
+        <div><button class="swatch on" style="background:#fff;border:3px solid #ccc" onclick="selSwatch(this,'White')"></button><span class="swatch-label" data-t="colWhite">White</span></div>
+        <div><button class="swatch" style="background:#1a1a1a" onclick="selSwatch(this,'Black')"></button><span class="swatch-label" data-t="colBlack">Black</span></div>
+        <div><button class="swatch" style="background:#9ca3af" onclick="selSwatch(this,'Gray')"></button><span class="swatch-label" data-t="colGray">Gray</span></div>
+        <div><button class="swatch" style="background:#1e3a5f" onclick="selSwatch(this,'Navy Blue')"></button><span class="swatch-label" data-t="colNavy">Navy</span></div>
+        <div><button class="swatch" style="background:#c0392b" onclick="selSwatch(this,'Red')"></button><span class="swatch-label" data-t="colRed">Red</span></div>
+      </div>
+    </div>
+
+    <!-- HOODIE -->
+    <div class="dyn" id="dyn-hoodie">
+      <span class="mlbl" data-t="brand">Brand</span>
+      <div class="g4" style="margin-bottom:16px">
+        <button class="opt on" onclick="selGroup(this,'brand','Bella Canvas')"><span class="opt-ico">✨</span><span class="opt-lbl">Bella Canvas</span></button>
+        <button class="opt" onclick="selGroup(this,'brand','Comfort Colors')"><span class="opt-ico">🎨</span><span class="opt-lbl">Comfort Colors</span></button>
+        <button class="opt" onclick="selGroup(this,'brand','Gildan')"><span class="opt-ico">🧥</span><span class="opt-lbl">Gildan</span></button>
+        <button class="opt" onclick="selGroup(this,'brand','Next Level')"><span class="opt-ico">⭐</span><span class="opt-lbl">Next Level</span></button>
+      </div>
+      <span class="mlbl" data-t="hoodieColor">Hoodie color</span>
+      <div class="swatch-row">
+        <div><button class="swatch on" style="background:#fff;border:3px solid #ccc" onclick="selSwatch(this,'White')"></button><span class="swatch-label" data-t="colWhite">White</span></div>
+        <div><button class="swatch" style="background:#1a1a1a" onclick="selSwatch(this,'Black')"></button><span class="swatch-label" data-t="colBlack">Black</span></div>
+        <div><button class="swatch" style="background:#9ca3af" onclick="selSwatch(this,'Gray')"></button><span class="swatch-label" data-t="colGray">Gray</span></div>
+        <div><button class="swatch" style="background:#1e3a5f" onclick="selSwatch(this,'Navy Blue')"></button><span class="swatch-label" data-t="colNavy">Navy</span></div>
+        <div><button class="swatch" style="background:#c0392b" onclick="selSwatch(this,'Red')"></button><span class="swatch-label" data-t="colRed">Red</span></div>
+      </div>
+    </div>
+
+    <!-- MUG -->
+    <div class="dyn" id="dyn-mug">
+      <span class="mlbl" data-t="mugStyle">Mug style</span>
+      <div class="g2">
+        <button class="opt on" onclick="selGroup(this,'mugstyle','classic white ceramic mug')"><span class="opt-ico">☕</span><span class="opt-lbl" data-t="mugWhite">Classic White</span><span class="opt-sub" data-t="mugWhiteSub">Classic white</span></button>
+        <button class="opt" onclick="selGroup(this,'mugstyle','black interior ceramic mug')"><span class="opt-ico">🖤</span><span class="opt-lbl" data-t="mugBlack">Black Interior</span><span class="opt-sub" data-t="mugBlackSub">Black inside</span></button>
+        <button class="opt" onclick="selGroup(this,'mugstyle','color-changing magic mug')"><span class="opt-ico">✨</span><span class="opt-lbl" data-t="mugMagic">Magic Mug</span><span class="opt-sub">Color reveal</span></button>
+        <button class="opt" onclick="selGroup(this,'mugstyle','tall latte mug')"><span class="opt-ico">🥛</span><span class="opt-lbl" data-t="mugLatte">Tall / Latte</span><span class="opt-sub" data-t="mugLatteSub">Tall café style</span></button>
+      </div>
+    </div>
+
+    <!-- STICKER -->
+    <div class="dyn" id="dyn-sticker">
+      <span class="mlbl" data-t="stickerType">What type of sticker?</span>
+      <div class="g2" style="margin-bottom:18px">
+        <button class="opt on" onclick="selStickerType(this,'individual')"><span class="opt-ico">🤌</span><span class="opt-lbl" data-t="stickerInd">Individual Sticker</span><span class="opt-sub" data-t="stickerIndSub">Single sticker</span></button>
+        <button class="opt" onclick="selStickerType(this,'sheet')"><span class="opt-ico">🗂️</span><span class="opt-lbl" data-t="stickerSheet">Sticker Sheet / Pack</span><span class="opt-sub" data-t="stickerSheetSub">Full pack</span></button>
+      </div>
+      <div id="sticker-individual-opts">
+        <span class="mlbl" data-t="stickerForm">Sticker shape</span>
+        <div class="g3" style="margin-bottom:14px">
+          <button class="opt on" onclick="selGroup(this,'stickerform','die-cut sticker following the exact shape and border of the uploaded design')"><span class="opt-ico">✂️</span><span class="opt-lbl">Die Cut</span><span class="opt-sub" data-t="dieCutSub">Follows border</span></button>
+          <button class="opt" onclick="selGroup(this,'stickerform','circular round sticker')"><span class="opt-ico">⭕</span><span class="opt-lbl" data-t="circular">Circular</span></button>
+          <button class="opt" onclick="selGroup(this,'stickerform','square sticker')"><span class="opt-ico">⬜</span><span class="opt-lbl" data-t="square">Square</span></button>
+        </div>
+        <span class="mlbl" data-t="stickerSize">Sticker size</span>
+        <div class="g5">
+          <button class="opt" onclick="selGroup(this,'stickersize','2x2 inch')"><span class="opt-ico">🔹</span><span class="opt-lbl">2×2"</span><span class="opt-sub">Mini</span></button>
+          <button class="opt on" onclick="selGroup(this,'stickersize','3x3 inch')"><span class="opt-ico">⭐</span><span class="opt-lbl">3×3"</span><span class="opt-sub" data-t="popular">Popular</span></button>
+          <button class="opt" onclick="selGroup(this,'stickersize','3x4 inch')"><span class="opt-ico">📐</span><span class="opt-lbl">3×4"</span></button>
+          <button class="opt" onclick="selGroup(this,'stickersize','4x4 inch')"><span class="opt-ico">🔷</span><span class="opt-lbl">4×4"</span><span class="opt-sub" data-t="large">Large</span></button>
+          <button class="opt" onclick="selGroup(this,'stickersize','4x6 inch')"><span class="opt-ico">🔶</span><span class="opt-lbl">4×6"</span><span class="opt-sub">Die cut XL</span></button>
+        </div>
+      </div>
+      <div id="sticker-sheet-opts" style="display:none">
+        <span class="mlbl" data-t="packPresentation">Pack presentation</span>
+        <div class="g3">
+          <button class="opt on" onclick="selPackPresentation(this,'flatlay')"><span class="opt-ico">📄</span><span class="opt-lbl" data-t="sheetFlatlay">Flat Sheet</span><span class="opt-sub">Flat lay</span></button>
+          <button class="opt" onclick="selPackPresentation(this,'transparent')"><span class="opt-ico">📦</span><span class="opt-lbl" data-t="sheetTransparent">Clear Package</span><span class="opt-sub" data-t="sheetTransparentSub">Pro Etsy style</span></button>
+          <button class="opt" onclick="selPackPresentation(this,'multiscene')"><span class="opt-ico">🎬</span><span class="opt-lbl" data-t="sheetMulti">Multi-Scene</span><span class="opt-sub">Laptop+tumbler+hand</span></button>
+        </div>
+        <div id="collection-opts" style="display:none;margin-top:16px">
+          <span class="mlbl" data-t="collectionName">Collection name (optional)</span>
+          <input type="text" id="collectionName" data-t-ph="collectionPH" placeholder='E.g.: "Girls Love Pilates"' style="width:100%;padding:10px 14px;border-radius:10px;border:1.5px solid var(--border);font-size:14px;font-family:'DM Sans',sans-serif;outline:none;color:var(--dark);margin-bottom:14px">
+          <span class="mlbl" data-t="textStyle">Text style</span>
+          <div class="g2">
+            <button class="opt on" onclick="selGroup(this,'textstyle','vibrant hot pink bold bubbly typography with white outline, fun and eye-catching')"><span class="opt-ico">🌸</span><span class="opt-lbl" data-t="tsVibrant">Vibrant Pink</span><span class="opt-sub">Bold & bubbly</span></button>
+            <button class="opt" onclick="selGroup(this,'textstyle','candy pastel rainbow typography, sweet soft gradient letters with sparkles')"><span class="opt-ico">🍬</span><span class="opt-lbl" data-t="tsCandy">Candy / Pastel</span><span class="opt-sub">Sweet gradient</span></button>
+            <button class="opt" onclick="selGroup(this,'textstyle','holographic iridescent foil typography, metallic rainbow sheen, ultra glossy letters')"><span class="opt-ico">🌈</span><span class="opt-lbl" data-t="tsHolo">Holographic</span><span class="opt-sub">Foil metallic</span></button>
+            <button class="opt" onclick="selGroup(this,'textstyle','custom')"><span class="opt-ico">✏️</span><span class="opt-lbl">Custom</span><span class="opt-sub" data-t="tsCustomSub">Describe your style</span></button>
+          </div>
+          <div id="customTextBox" style="display:none;margin-top:10px">
+            <input type="text" id="customTextStyle" data-t-ph="customTextPH" placeholder='E.g.: "gold glitter retro 70s font"' style="width:100%;padding:10px 14px;border-radius:10px;border:1.5px solid var(--border);font-size:14px;font-family:'DM Sans',sans-serif;outline:none;color:var(--dark)">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOTE BAG -->
+    <div class="dyn" id="dyn-totebag">
+      <span class="mlbl" data-t="bagColor">Bag color</span>
+      <div class="swatch-row">
+        <div><button class="swatch on" style="background:#f5f0e8;border:3px solid #ccc" onclick="selSwatch(this,'natural canvas')"></button><span class="swatch-label" data-t="natural">Natural</span></div>
+        <div><button class="swatch" style="background:#fff;border:3px solid #ccc" onclick="selSwatch(this,'white')"></button><span class="swatch-label" data-t="colWhite">White</span></div>
+        <div><button class="swatch" style="background:#1a1a1a" onclick="selSwatch(this,'black')"></button><span class="swatch-label" data-t="colBlack">Black</span></div>
+      </div>
+    </div>
+
+    <!-- CANDLE -->
+    <div class="dyn" id="dyn-candle">
+      <span class="mlbl" data-t="candleType">Candle type</span>
+      <div class="g3">
+        <button class="opt on" onclick="selGroup(this,'candletype','glass jar candle with label')"><span class="opt-ico">🕯️</span><span class="opt-lbl" data-t="candleGlass">Glass Jar</span></button>
+        <button class="opt" onclick="selGroup(this,'candletype','tin candle with label')"><span class="opt-ico">🫙</span><span class="opt-lbl" data-t="candleTin">Tin</span></button>
+        <button class="opt" onclick="selGroup(this,'candletype','pillar candle with wrap label')"><span class="opt-ico">🏛️</span><span class="opt-lbl" data-t="candlePillar">Pillar</span><span class="opt-sub">Wrap label</span></button>
+      </div>
+    </div>
+
+    <!-- DIGITAL PRODUCT -->
+    <div class="dyn" id="dyn-digital">
+      <span class="mlbl" data-t="deviceType">Device / Screen</span>
+      <div class="g2">
+        <button class="opt on" onclick="selDevice(this,'laptop')"><span class="opt-ico">💻</span><span class="opt-lbl" data-t="devLaptop">Laptop</span><span class="opt-sub">MacBook Pro M3 14" (2024)</span></button>
+        <button class="opt" onclick="selDevice(this,'imac')"><span class="opt-ico">🖥️</span><span class="opt-lbl" data-t="devImac">Desktop / iMac</span><span class="opt-sub">iMac 24" M3 (2024)</span></button>
+        <button class="opt" onclick="selDevice(this,'ipad')"><span class="opt-ico">📱</span><span class="opt-lbl" data-t="devIpad">iPad</span><span class="opt-sub">iPad Pro 13" M4 (2024)</span></button>
+        <button class="opt" onclick="selDevice(this,'iphone')"><span class="opt-ico">📲</span><span class="opt-lbl" data-t="devIphone">iPhone</span><span class="opt-sub">iPhone 16 Pro Max (2024)</span></button>
+      </div>
+    </div>
+
+    <!-- BUNDLE -->
+    <div class="dyn" id="dyn-bundle">
+      <span class="mlbl" data-t="selectBundle">Select bundle products</span>
+      <div class="bundle-dropdown">
+        <button class="bundle-trigger" id="bundleTrigger" onclick="toggleBundleMenu()">
+          <span id="bundleTriggerText" data-t="bundleChoose">Choose products...</span>
+          <span id="bundleArrow">▾</span>
+        </button>
+        <div class="bundle-menu" id="bundleMenu">
+          <div class="bundle-all">
+            <span class="bundle-all-lbl" data-t="products">Products</span>
+            <button class="bundle-all-btn" id="bundleAllBtn" onclick="toggleAllBundle()" data-t="selectAll">Select all</button>
+          </div>
+          <label class="bundle-item"><input type="checkbox" value="hoodie" onchange="updateBundleSel()"> 🧥 <span data-t="pHoodie">Hoodie</span></label>
+          <label class="bundle-item"><input type="checkbox" value="t-shirt" onchange="updateBundleSel()"> 👕 <span data-t="pTshirt">T-Shirt</span></label>
+          <label class="bundle-item"><input type="checkbox" value="mug" onchange="updateBundleSel()"> ☕ <span data-t="pMug">Mug</span></label>
+          <label class="bundle-item"><input type="checkbox" value="tumbler" onchange="updateBundleSel()"> 🥤 Tumbler</label>
+          <label class="bundle-item"><input type="checkbox" value="notebook" onchange="updateBundleSel()"> 📓 <span data-t="pNotebook">Notebook</span></label>
+          <label class="bundle-item"><input type="checkbox" value="book" onchange="updateBundleSel()"> 📗 <span data-t="pBook">Book</span></label>
+          <label class="bundle-item"><input type="checkbox" value="phone case" onchange="updateBundleSel()"> 📱 <span data-t="phoneCase">Phone case</span></label>
+          <label class="bundle-item"><input type="checkbox" value="tote bag" onchange="updateBundleSel()"> 🛍️ <span data-t="pTote">Tote Bag</span></label>
+          <label class="bundle-item"><input type="checkbox" value="candle" onchange="updateBundleSel()"> 🕯️ <span data-t="pCandle">Candle</span></label>
+          <label class="bundle-item"><input type="checkbox" value="sticker" onchange="updateBundleSel()"> 🪧 <span data-t="pSticker">Sticker</span></label>
+        </div>
+      </div>
+      <div class="bundle-selected" id="bundleSelectedText"></div>
+    </div>
+  </div>
+
+  <!-- STEP 4 SCENE -->
+  <div class="card" id="card-s4">
+    <div class="step-label"><div class="step-num sn4">4</div><div><div class="step-title" data-t="s4title">Scene / Setting</div><div class="step-sub" data-t="s4sub">Where is the product located?</div></div></div>
+    <hr class="divider">
+    <div class="dyn show" id="scene-notebook"><div class="g3">
+      <button class="opt on" onclick="selGroup(this,'scene','a warm boho living room with natural plants, macrame wall decor and soft window light')"><span class="opt-ico">🪴</span><span class="opt-lbl" data-t="scBoho">Boho Room</span></button>
+      <button class="opt" onclick="selGroup(this,'scene','a light oak wood table with warm natural daylight from the side')"><span class="opt-ico">🪵</span><span class="opt-lbl" data-t="scWood">Wood Table</span></button>
+      <button class="opt" onclick="selGroup(this,'scene','a clean white marble flat surface with minimal studio lighting')"><span class="opt-ico">🤍</span><span class="opt-lbl" data-t="scMarble">Marble Flat Lay</span></button>
+      <button class="opt" onclick="selGroup(this,'scene','an outdoor garden setting with green bokeh background and natural sunlight')"><span class="opt-ico">🌿</span><span class="opt-lbl" data-t="scOutdoor">Outdoor Garden</span></button>
+      <button class="opt" onclick="selGroup(this,'scene','a school desk with soft pencils and small decorative elements around')"><span class="opt-ico">🖊️</span><span class="opt-lbl" data-t="scDesk">School Desk</span></button>
+      <button class="opt" onclick="selGroup(this,'scene','a cozy bed with white linen pillows and a soft blanket')"><span class="opt-ico">🛏️</span><span class="opt-lbl" data-t="scBed">Cozy Bed</span></button>
+    </div></div>
+    <div class="dyn" id="scene-book"><div class="g3">
+      <button class="opt on" onclick="selGroup(this,'scene','a warm boho living room with natural plants and soft window light')"><span class="opt-ico">🪴</span><span class="opt-lbl" data-t="scBoho">Boho Room</span></button>
+      <button class="opt" onclick="selGroup(this,'scene','a cozy reading nook with warm lamp light and soft cushions')"><span class="opt-ico">📖</span><span class="opt-lbl" data-t="scNook">Reading Nook</span></button>
+      <button class="opt" onclick="selGroup(this,'scene','a clean white marble flat surface with minimal studio lighting')"><span class="opt-ico">🤍</span><span class="opt-lbl" data-t="scMarble">Marble Flat Lay</span></button>
+      <button class="opt" onclick="selGroup(this,'scene','a wooden bookshelf with warm ambient lighting')"><span class="opt-ico">📚</span><span class="opt-lbl" data-t="scBookshelf">Bookshelf</span></button>
+      <button class="opt" onclick="selGroup(this,'scene','a coffee shop table with warm cafe ambiance')"><span class="opt-ico">☕</span><span class="opt-lbl" data-t="scCafe">Coffee Shop</span></button>
+      <button class="opt" onclick="selGroup(this,'scene','an outdoor bench in a sunny park')"><span class="opt-ico">🌳</span><span class="opt-lbl" data-t="scPark">Outdoor Park</span></button>
+    </div></div>
+    <div class="dyn" id="scene-tshirt"><div class="g3">
+      <button class="opt on" onclick="selGroup(this,'scene','a modern urban street background with natural light')"><span class="opt-ico">🏙️</span><span class="opt-lbl" data-t="scUrban">Urban Street</span></button>
+      <button class="opt" onclick="selGroup(this,'scene','a clean white studio background with professional lighting')"><span class="opt-ico">🤍</span><span class="opt-lbl" data-t="scStudio">White Studio</span></button>
+      <button class="opt" onclick="selGroup(this,'scene','an outdoor sunny park with green blurred background')"><span class="opt-ico">🌳</span><span class="opt-lbl" data-t="scPark">Outdoor Park</span></button>
+      <button class="opt" onclick="selGroup(this,'scene','a cozy boho bedroom with mirror and plants')"><span class="opt-ico">🪴</span><span class="opt-lbl" data-t="scBohoBR">Boho Bedroom</span></button>
+      <button class="opt" onclick="selGroup(this,'scene','a bright and airy minimalist room with white walls')"><span class="opt-ico">✨</span><span class="opt-lbl" data-t="scMinimal">Minimal Room</span></button>
+      <button class="opt" onclick="selGroup(this,'scene','a coffee shop background with warm ambient light')"><span class="opt-ico">☕</span><span class="opt-lbl" data-t="scCafe">Coffee Shop</span></button>
+    </div></div>
+    <div class="dyn" id="scene-hoodie"><div class="g3">
+      <button class="opt on" onclick="selGroup(this,'scene','a modern urban street background with natural light')"><span class="opt-ico">🏙️</span><span class="opt-lbl" data-t="scUrban">Urban Street</span></button>
+      <button class="opt" onclick="selGroup(this,'scene','an autumn park with warm golden foliage background')"><span class="opt-ico">🍂</span><span class="opt-lbl" data-t="scAutumn">Autumn Park</span></button>
+      <button class="opt" onclick="selGroup(this,'scene','a clean white studio background with professional lighting')"><span class="opt-ico">🤍</span><span class="opt-lbl" data-t="scStudio">White Studio</span></button>
+      <button class="opt" onclick="selGroup(this,'scene','a cozy indoor setting with warm lighting and brick wall')"><span class="opt-ico">🧱</span><span class="opt-lbl" data-t="scBrick">Brick Wall</span></button>
+      <button class="opt" onclick="selGroup(this,'scene','a coffee shop with warm winter ambiance')"><span class="opt-ico">☕</span><span class="opt-lbl" data-t="scCafe">Coffee Shop</span></button>
+      <button class="opt" onclick="selGroup(this,'scene','an outdoor mountain or forest path with natural light')"><span class="opt-ico">🏔️</span><span class="opt-lbl" data-t="scMountain">Mountain/Forest</span></button>
+    </div></div>
+    <div class="dyn" id="scene-mug"><div class="g3">
+      <button class="opt on" onclick="selGroup(this,'scene','a cozy coffee shop with warm ambient lighting, wooden table, soft bokeh background')"><span class="opt-ico">☕</span><span class="opt-lbl" data-t="scCozyC">Cozy Café</span></button>
+      <button class="opt" onclick="selGroup(this,'scene','a kitchen table with a fresh croissant and morning newspaper beside the mug')"><span class="opt-ico">🥐</span><span class="opt-lbl" data-t="scCroissant">Table & Croissant</span></button>
+      <button class="opt" onclick="selGroup(this,'scene','a window sill with rain drops on the glass and soft grey light outside')"><span class="opt-ico">🌧️</span><span class="opt-lbl" data-t="scRain">Rainy Window</span></button>
+      <button class="opt" onclick="selGroup(this,'scene','a home office desk with laptop, notebook and morning light')"><span class="opt-ico">💻</span><span class="opt-lbl" data-t="scHomeOffice">Home Office</span></button>
+      <button class="opt" onclick="selGroup(this,'scene','a white marble kitchen counter with minimal elegant styling')"><span class="opt-ico">🤍</span><span class="opt-lbl" data-t="scMarbleK">Marble Kitchen</span></button>
+      <button class="opt" onclick="selGroup(this,'scene','an outdoor patio table with garden blurred background and morning light')"><span class="opt-ico">🌸</span><span class="opt-lbl" data-t="scPatio">Outdoor Patio</span></button>
+    </div></div>
+    <div class="dyn" id="scene-sticker-individual"><div class="g3">
+      <button class="opt on" onclick="selGroup(this,'scene','stuck on a silver MacBook laptop lid on a wooden desk with soft ambient light')"><span class="opt-ico">💻</span><span class="opt-lbl">Laptop</span></button>
+      <button class="opt" onclick="selGroup(this,'scene','being pinched between thumb and index finger close-up with blurred colorful background')"><span class="opt-ico">🤌</span><span class="opt-lbl" data-t="scHandHold">Holding</span></button>
+      <button class="opt" onclick="selGroup(this,'scene','stuck on a white tumbler or water bottle on a marble surface')"><span class="opt-ico">💧</span><span class="opt-lbl" data-t="scTumbler">Bottle/Tumbler</span></button>
+      <button class="opt" onclick="selGroup(this,'scene','flat lay on a white marble surface with small matching decorative props')"><span class="opt-ico">🤍</span><span class="opt-lbl" data-t="scMarble">Marble Flat Lay</span></button>
+      <button class="opt" onclick="selGroup(this,'scene','placed on an open journal or planner on a wooden desk')"><span class="opt-ico">📓</span><span class="opt-lbl" data-t="scJournal">Journal/Planner</span></button>
+      <button class="opt" onclick="selGroup(this,'scene','on a colorful fun background with confetti and small props')"><span class="opt-ico">🎉</span><span class="opt-lbl" data-t="scFun">Fun Background</span></button>
+    </div></div>
+    <div class="dyn" id="scene-sticker-sheet"><div class="g3">
+      <button class="opt on" onclick="selGroup(this,'scene','flat lay on a clean white marble surface, slightly angled, soft studio lighting')"><span class="opt-ico">🤍</span><span class="opt-lbl" data-t="scMarble">Marble Flat Lay</span></button>
+      <button class="opt" onclick="selGroup(this,'scene','flat lay on a light oak wood table with warm natural daylight and small props')"><span class="opt-ico">🪵</span><span class="opt-lbl" data-t="scWood">Wood Table</span></button>
+      <button class="opt" onclick="selGroup(this,'scene','held with both hands at chest level showing the pack front clearly')"><span class="opt-ico">🤲</span><span class="opt-lbl" data-t="scHoldPack">Holding Pack</span></button>
+      <button class="opt" onclick="selGroup(this,'scene','on a colorful pastel background with confetti, flowers and fun props')"><span class="opt-ico">🎉</span><span class="opt-lbl" data-t="scColorBG">Colorful BG</span></button>
+      <button class="opt" onclick="selGroup(this,'scene','on a school desk surrounded by pencils, notebook and decorative elements')"><span class="opt-ico">🖊️</span><span class="opt-lbl" data-t="scDesk">School Desk</span></button>
+    </div></div>
+    <div class="dyn" id="scene-totebag"><div class="g3">
+      <button class="opt on" onclick="selGroup(this,'scene','being carried on the shoulder of a person in an urban street setting')"><span class="opt-ico">🏙️</span><span class="opt-lbl" data-t="scUrban">Urban Street</span></button>
+      <button class="opt" onclick="selGroup(this,'scene','hanging on a white wall hook with soft natural light')"><span class="opt-ico">🤍</span><span class="opt-lbl" data-t="scWallHook">Wall Hook</span></button>
+      <button class="opt" onclick="selGroup(this,'scene','flat lay on a white marble surface with flowers and small props')"><span class="opt-ico">🌸</span><span class="opt-lbl" data-t="scFlatlay">Flat Lay</span></button>
+      <button class="opt" onclick="selGroup(this,'scene','in a farmers market or outdoor setting with warm light')"><span class="opt-ico">🌿</span><span class="opt-lbl" data-t="scMarket">Farmers Market</span></button>
+    </div></div>
+    <div class="dyn" id="scene-candle"><div class="g3">
+      <button class="opt on" onclick="selGroup(this,'scene','on a bathroom vanity with eucalyptus leaves and soft warm light')"><span class="opt-ico">🛁</span><span class="opt-lbl" data-t="scVanity">Bathroom Vanity</span></button>
+      <button class="opt" onclick="selGroup(this,'scene','on a wooden coffee table with warm candle glow and cozy blanket')"><span class="opt-ico">🕯️</span><span class="opt-lbl" data-t="scCozyLR">Cozy Living Room</span></button>
+      <button class="opt" onclick="selGroup(this,'scene','flat lay on marble with dried flowers and matching props')"><span class="opt-ico">🌸</span><span class="opt-lbl" data-t="scMarble">Marble Flat Lay</span></button>
+      <button class="opt" onclick="selGroup(this,'scene','on a bedroom nightstand with soft lamp light')"><span class="opt-ico">🛏️</span><span class="opt-lbl" data-t="scNightstand">Nightstand</span></button>
+    </div></div>
+    <div class="dyn" id="scene-bundle"><div class="g3">      <button class="opt on" onclick="selGroup(this,'scene','a flat lay on a white marble surface with soft flowers and matching props around the products')"><span class="opt-ico">🤍</span><span class="opt-lbl" data-t="scMarble">Marble Flat Lay</span></button>
+      <button class="opt" onclick="selGroup(this,'scene','a warm boho surface with natural flowers, greenery and soft window light')"><span class="opt-ico">🌸</span><span class="opt-lbl" data-t="scBohoFloral">Boho Floral</span></button>
+      <button class="opt" onclick="selGroup(this,'scene','a clean white studio surface, perfectly arranged, professional commercial photography')"><span class="opt-ico">📸</span><span class="opt-lbl" data-t="scStudio">White Studio</span></button>
+      <button class="opt" onclick="selGroup(this,'scene','a light oak wood table with warm natural light and small decorative elements')"><span class="opt-ico">🪵</span><span class="opt-lbl" data-t="scWood">Wood Table</span></button>
+      <button class="opt" onclick="selGroup(this,'scene','a gift-style flat lay with ribbon, tissue paper and elegant wrapping elements')"><span class="opt-ico">🎁</span><span class="opt-lbl" data-t="scGift">Gift Style</span></button>
+    </div></div>
+  </div>
+
+  <!-- STEP 4b: DIGITAL SCENES -->
+  <div class="card" id="digital-scene-card" style="display:none">
+    <div class="step-label"><div class="step-num sn4" style="background:var(--teal)">4</div><div><div class="step-title" data-t="s4bTitle">Select a Scene</div><div class="step-sub" data-t="s4bSub">Choose one scene for your digital product mockup</div></div></div>
+    <hr class="divider">
+
+    <!-- LAPTOP SCENES -->
+    <div class="dyn show" id="dscene-laptop"><div class="g3">
+      <button class="opt on" onclick="selDigScene(this,0)"><span class="opt-ico">✨</span><span class="opt-lbl">Luxury White & Gold</span><span class="opt-sub">Glass desk · Gold accents</span></button>
+      <button class="opt" onclick="selDigScene(this,1)"><span class="opt-ico">🤍</span><span class="opt-lbl">Cozy Neutral Minimal</span><span class="opt-sub">Beige sofa · Latte</span></button>
+      <button class="opt" onclick="selDigScene(this,2)"><span class="opt-ico">🌸</span><span class="opt-lbl">All Pink Glam</span><span class="opt-sub">Pink room · Aesthetic</span></button>
+      <button class="opt" onclick="selDigScene(this,3)"><span class="opt-ico">💗</span><span class="opt-lbl">Pink Dreamy Desk</span><span class="opt-sub">Pastel pink · Window</span></button>
+      <button class="opt" onclick="selDigScene(this,4)"><span class="opt-ico">🌹</span><span class="opt-lbl">Rose Gold Office</span><span class="opt-sub">Peonies · Rose gold</span></button>
+      <button class="opt" onclick="selDigScene(this,'custom')"><span class="opt-ico">✏️</span><span class="opt-lbl" data-t="customScene">Custom Scene</span><span class="opt-sub" data-t="customSceneSub">Describe your own</span></button>
+    </div></div>
+
+    <!-- iMAC SCENES -->
+    <div class="dyn" id="dscene-imac"><div class="g3">
+      <button class="opt on" onclick="selDigScene(this,0)"><span class="opt-ico">✨</span><span class="opt-lbl">Luxury Home Office</span><span class="opt-sub">White · Gold · Flowers</span></button>
+      <button class="opt" onclick="selDigScene(this,1)"><span class="opt-ico">🤍</span><span class="opt-lbl">Professional Studio</span><span class="opt-sub">Clean · Minimal · White</span></button>
+      <button class="opt" onclick="selDigScene(this,2)"><span class="opt-ico">☁️</span><span class="opt-lbl">Minimal White Clean</span><span class="opt-sub">Scandinavian · Airy</span></button>
+      <button class="opt" onclick="selDigScene(this,3)"><span class="opt-ico">🌹</span><span class="opt-lbl">Rose Gold Glam</span><span class="opt-sub">Blush pink · Rose gold</span></button>
+      <button class="opt" onclick="selDigScene(this,4)"><span class="opt-ico">🌙</span><span class="opt-lbl">Dark Moody Creative</span><span class="opt-sub">Dark wood · Artistic</span></button>
+      <button class="opt" onclick="selDigScene(this,'custom')"><span class="opt-ico">✏️</span><span class="opt-lbl" data-t="customScene">Custom Scene</span><span class="opt-sub" data-t="customSceneSub">Describe your own</span></button>
+    </div></div>
+
+    <!-- iPAD SCENES -->
+    <div class="dyn" id="dscene-ipad"><div class="g3">
+      <button class="opt on" onclick="selDigScene(this,0)"><span class="opt-ico">🛏️</span><span class="opt-lbl">Cozy Bed</span><span class="opt-sub">White linen · Morning light</span></button>
+      <button class="opt" onclick="selDigScene(this,1)"><span class="opt-ico">🛋️</span><span class="opt-lbl">Sofa Cozy</span><span class="opt-sub">Beige sofa · Coffee</span></button>
+      <button class="opt" onclick="selDigScene(this,2)"><span class="opt-ico">☕</span><span class="opt-lbl">Coffee Table</span><span class="opt-sub">Marble · Latte · Flowers</span></button>
+      <button class="opt" onclick="selDigScene(this,3)"><span class="opt-ico">🤍</span><span class="opt-lbl">Marble Flat Lay</span><span class="opt-sub">Top-down · Clean · Elegant</span></button>
+      <button class="opt" onclick="selDigScene(this,4)"><span class="opt-ico">🌿</span><span class="opt-lbl">Outdoor Garden</span><span class="opt-sub">Green bokeh · Natural light</span></button>
+      <button class="opt" onclick="selDigScene(this,'custom')"><span class="opt-ico">✏️</span><span class="opt-lbl" data-t="customScene">Custom Scene</span><span class="opt-sub" data-t="customSceneSub">Describe your own</span></button>
+    </div></div>
+
+    <!-- iPHONE SCENES -->
+    <div class="dyn" id="dscene-iphone"><div class="g3">
+      <button class="opt on" onclick="selDigScene(this,0)"><span class="opt-ico">✨</span><span class="opt-lbl">Flat Lay + Accessories</span><span class="opt-sub">Marble · Gold · Flowers</span></button>
+      <button class="opt" onclick="selDigScene(this,1)"><span class="opt-ico">☕</span><span class="opt-lbl">Coffee Table</span><span class="opt-sub">Cafe · Latte · Warm</span></button>
+      <button class="opt" onclick="selDigScene(this,2)"><span class="opt-ico">🛏️</span><span class="opt-lbl">Aesthetic Bed</span><span class="opt-sub">White linen · Morning</span></button>
+      <button class="opt" onclick="selDigScene(this,3)"><span class="opt-ico">🌿</span><span class="opt-lbl">Outdoor Lifestyle</span><span class="opt-sub">Natural light · Green bokeh</span></button>
+      <button class="opt" onclick="selDigScene(this,4)"><span class="opt-ico">🤍</span><span class="opt-lbl">Marble Minimal</span><span class="opt-sub">Clean · Elegant · Crisp</span></button>
+      <button class="opt" onclick="selDigScene(this,'custom')"><span class="opt-ico">✏️</span><span class="opt-lbl" data-t="customScene">Custom Scene</span><span class="opt-sub" data-t="customSceneSub">Describe your own</span></button>
+    </div></div>
+
+    <!-- CUSTOM INPUT -->
+    <div id="dig-custom-box" style="display:none;margin-top:14px;padding:14px;background:var(--pink-wash);border-radius:12px;border:1.5px dashed #E0A89E">
+      <span class="mlbl" data-t="customSceneDesc">Describe your scene</span>
+      <textarea id="dig-custom-input" rows="3" data-t-ph="customScenePH" placeholder='E.g.: "a rooftop terrace at sunset with city lights in the background, warm golden hour light, minimal props"' style="width:100%;padding:10px 14px;border-radius:10px;border:1.5px solid #e0d4cf;font-size:13px;font-family:DM Sans,sans-serif;outline:none;resize:vertical;line-height:1.6;background:#fff;color:var(--dark);margin-top:6px"></textarea>
+    </div>
+
+    <!-- HAND OPTION (iPad/iPhone only) -->
+    <div id="digital-hand-opts" style="display:none;margin-top:16px">
+      <span class="mlbl" data-t="handOption">Hand option (optional)</span>
+      <div class="g2" style="margin-top:8px">
+        <button class="opt on" onclick="selGroup(this,'digitalHand','none')"><span class="opt-ico">🚫</span><span class="opt-lbl" data-t="noHand">No hand</span><span class="opt-sub" data-t="noHandSub">Device only</span></button>
+        <button class="opt" id="btnHandPencil" style="display:none" onclick="selGroup(this,'digitalHand','pencil')"><span class="opt-ico">✏️</span><span class="opt-lbl" data-t="handPencil">Apple Pencil</span><span class="opt-sub" data-t="handPencilSub">Writing on screen</span></button>
+        <button class="opt" id="btnHandPhone" style="display:none" onclick="selGroup(this,'digitalHand','holding')"><span class="opt-ico">🤚</span><span class="opt-lbl" data-t="handHolding">Hand holding</span><span class="opt-sub" data-t="handHoldingSub">Natural grip</span></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 5 ACTION -->
+  <div class="card" id="card-s5">
+    <div class="step-label"><div class="step-num sn5">5</div><div><div class="step-title" data-t="s5title">Action</div><div class="step-sub" data-t="s5sub">What is happening in the scene?</div></div></div>
+    <hr class="divider">
+    <div class="dyn show" id="action-notebook"><div class="g2">
+      <button class="opt on" onclick="selGroup(this,'action','holding the product up with both hands at chest level displaying the front cover clearly');hideInterior()"><span class="opt-ico">🤲</span><span class="opt-lbl" data-t="acHolding">Holding</span><span class="opt-sub" data-t="acHoldingSub">Showing cover</span></button>
+      <button class="opt" onclick="selGroup(this,'action','writing');showInterior()"><span class="opt-ico">✏️</span><span class="opt-lbl" data-t="acWriting">Writing</span><span class="opt-sub" data-t="acWritingSub">Writing inside</span></button>
+      <button class="opt" onclick="selGroup(this,'action','looking at the open product with a focused and curious expression, cover visible');hideInterior()"><span class="opt-ico">👀</span><span class="opt-lbl" data-t="acReading">Reading</span></button>
+      <button class="opt" onclick="selGroup(this,'action','product placed flat face-up in the center of the scene, top-down view');hideInterior()"><span class="opt-ico">📸</span><span class="opt-lbl" data-t="acFlatlay">Flat Lay</span><span class="opt-sub">Top-down</span></button>
+    </div>
+    <!-- INTERIOR PAGE DROPDOWN — only when Writing selected -->
+    <div id="interior-page-box" style="display:none;margin-top:16px;padding:16px;background:var(--purple-light);border-radius:14px;border:1.5px solid var(--purple-mid)">
+      <span class="mlbl" data-t="interiorType">Interior page type</span>
+      <div class="g2" style="margin-bottom:0">
+        <button class="opt on" onclick="selInterior(this,'grid')"><span class="opt-ico">📐</span><span class="opt-lbl" data-t="intGrid">Cuadriculada</span><span class="opt-sub">Grid paper</span></button>
+        <button class="opt" onclick="selInterior(this,'lined-bw')"><span class="opt-ico">📝</span><span class="opt-lbl" data-t="intLinedBW">Lineal B&N</span><span class="opt-sub">Amazon standard</span></button>
+        <button class="opt" onclick="selInterior(this,'lined-blue')"><span class="opt-ico">🔵</span><span class="opt-lbl" data-t="intLinedBlue">Lineal azul</span><span class="opt-sub">Blue ruled lines</span></button>
+        <button class="opt" onclick="selInterior(this,'calligraphy')"><span class="opt-ico">✍️</span><span class="opt-lbl" data-t="intCallig">Caligrafía</span><span class="opt-sub">Lettering guides</span></button>
+        <button class="opt" onclick="selInterior(this,'custom')"><span class="opt-ico">🎨</span><span class="opt-lbl" data-t="intCustom">Custom</span><span class="opt-sub" data-t="intCustomSub">Mi propio diseño</span></button>
+      </div>
+      <!-- Custom notice — only for custom -->
+      <div id="interior-custom-notice" style="display:none;margin-top:12px;padding:12px 14px;background:#fff;border-radius:10px;border:1.5px solid #EC4899;font-size:13px;line-height:1.7;color:#1a1a1a">
+        <strong style="color:#EC4899" data-t="customNoticeTitle">📎 Instrucciones para Custom:</strong><br>
+        <span data-t="customNoticeText">Sube 2 imágenes a la IA — <strong>Image A = portada</strong>, <strong>Image B = página interior</strong>.<br>Se generan 2 prompts especiales: uno para Gemini ✅ y uno para ChatGPT.</span>
+      </div>
+    </div>
+    </div>
+    <div class="dyn" id="action-book"><div class="g2">
+      <button class="opt on" onclick="selGroup(this,'action','holding the book up with both hands showing the front cover clearly')"><span class="opt-ico">🤲</span><span class="opt-lbl" data-t="acHolding">Holding</span></button>
+      <button class="opt" onclick="selGroup(this,'action','reading the open book with an engaged expression, cover visible')"><span class="opt-ico">📖</span><span class="opt-lbl" data-t="acReading">Reading</span></button>
+      <button class="opt" onclick="selGroup(this,'action','book placed flat face-up top-down view with props around it')"><span class="opt-ico">📸</span><span class="opt-lbl" data-t="acFlatlay">Flat Lay</span></button>
+      <button class="opt" onclick="selGroup(this,'action','close-up detail shot of the book cover with shallow depth of field')"><span class="opt-ico">🔍</span><span class="opt-lbl" data-t="acCloseup">Close-up</span></button>
+    </div></div>
+    <div class="dyn" id="action-tshirt"><div class="g2">
+      <button class="opt on" onclick="selGroup(this,'action','posing facing the camera directly showing the front design clearly')"><span class="opt-ico">🧍</span><span class="opt-lbl" data-t="acFront">Front Pose</span></button>
+      <button class="opt" onclick="selGroup(this,'action','posing at a slight angle showing the shirt and design naturally')"><span class="opt-ico">🚶</span><span class="opt-lbl" data-t="acSide">Side Angle</span></button>
+      <button class="opt" onclick="selGroup(this,'action','looking directly at the camera with a natural confident smile')"><span class="opt-ico">😊</span><span class="opt-lbl" data-t="acLooking">Looking at Camera</span></button>
+      <button class="opt" onclick="selGroup(this,'action','close-up shot focused on the shirt design, cropped to chest area')"><span class="opt-ico">🔍</span><span class="opt-lbl" data-t="acDesignCU">Design Close-up</span></button>
+    </div></div>
+    <div class="dyn" id="action-hoodie"><div class="g2">
+      <button class="opt on" onclick="selGroup(this,'action','posing facing the camera directly showing the front design clearly, hands in pockets')"><span class="opt-ico">🧍</span><span class="opt-lbl" data-t="acFront">Front Pose</span></button>
+      <button class="opt" onclick="selGroup(this,'action','posing at a slight angle showing the hoodie naturally')"><span class="opt-ico">🚶</span><span class="opt-lbl" data-t="acSide">Side Angle</span></button>
+      <button class="opt" onclick="selGroup(this,'action','looking directly at the camera with a relaxed natural expression')"><span class="opt-ico">😊</span><span class="opt-lbl" data-t="acLooking">Looking at Camera</span></button>
+      <button class="opt" onclick="selGroup(this,'action','close-up shot focused on the hoodie design, cropped to chest area')"><span class="opt-ico">🔍</span><span class="opt-lbl" data-t="acDesignCU">Design Close-up</span></button>
+    </div></div>
+    <div class="dyn" id="action-mug"><div class="g2">
+      <button class="opt on" onclick="selGroup(this,'action','holding the mug with both hands warmly, steam rising from the top')"><span class="opt-ico">🤲</span><span class="opt-lbl" data-t="acHolding">Holding</span><span class="opt-sub" data-t="acMugSub">Both hands, steam</span></button>
+      <button class="opt" onclick="selGroup(this,'action','taking a sip from the mug with eyes closed in enjoyment')"><span class="opt-ico">😌</span><span class="opt-lbl" data-t="acSipping">Taking a Sip</span></button>
+      <button class="opt" onclick="selGroup(this,'action','mug placed on surface top-down flat lay view showing design')"><span class="opt-ico">📸</span><span class="opt-lbl" data-t="acFlatlay">Flat Lay</span></button>
+      <button class="opt" onclick="selGroup(this,'action','close-up of the mug side showing the design clearly, shallow depth of field')"><span class="opt-ico">🔍</span><span class="opt-lbl" data-t="acDesignCU">Design Close-up</span></button>
+    </div></div>
+    <div class="dyn" id="action-sticker-individual"><div class="g2">
+      <button class="opt on" onclick="selGroup(this,'action','pinched between the thumb and index finger, sticker facing the camera, design fully visible and sharp')"><span class="opt-ico">🤌</span><span class="opt-lbl" data-t="acPinching">Pinching</span><span class="opt-sub">Thumb & index</span></button>
+      <button class="opt" onclick="selGroup(this,'action','being carefully peeled and pressed onto a surface, action close-up shot')"><span class="opt-ico">🏷️</span><span class="opt-lbl" data-t="acPeeling">Peeling & Placing</span></button>
+      <button class="opt" onclick="selGroup(this,'action','placed flat face-up on surface, top-down view, design fully visible')"><span class="opt-ico">📸</span><span class="opt-lbl" data-t="acFlatlay">Flat Lay</span></button>
+      <button class="opt" onclick="selGroup(this,'action','macro close-up of the sticker surface showing texture, gloss and fine detail')"><span class="opt-ico">🔍</span><span class="opt-lbl" data-t="acMacro">Macro Close-up</span></button>
+    </div></div>
+    <div class="dyn" id="action-sticker-sheet"><div class="g2">
+      <button class="opt on" onclick="selGroup(this,'action','placed flat face-up on surface slightly angled, all stickers clearly visible, top-down view')"><span class="opt-ico">📸</span><span class="opt-lbl" data-t="acAngledFL">Angled Flat Lay</span></button>
+      <button class="opt" onclick="selGroup(this,'action','held with both hands showing the front of the pack clearly toward camera')"><span class="opt-ico">🤲</span><span class="opt-lbl" data-t="acHoldPack">Holding Pack</span></button>
+      <button class="opt" onclick="selGroup(this,'action','close-up detail of the sticker sheet showing individual stickers clearly')"><span class="opt-ico">🔍</span><span class="opt-lbl" data-t="acPackCU">Pack Close-up</span></button>
+    </div></div>
+    <div class="dyn" id="action-totebag"><div class="g2">
+      <button class="opt on" onclick="selGroup(this,'action','carried over the shoulder naturally')"><span class="opt-ico">👜</span><span class="opt-lbl" data-t="acShoulder">Over Shoulder</span></button>
+      <button class="opt" onclick="selGroup(this,'action','held in the hand at the side showing the design')"><span class="opt-ico">🤚</span><span class="opt-lbl" data-t="acHandHeld">Hand Held</span></button>
+      <button class="opt" onclick="selGroup(this,'action','flat lay top-down view showing design clearly')"><span class="opt-ico">📸</span><span class="opt-lbl" data-t="acFlatlay">Flat Lay</span></button>
+    </div></div>
+    <div class="dyn" id="action-candle"><div class="g2">
+      <button class="opt on" onclick="selGroup(this,'action','placed on surface lit with flame glowing, label facing camera')"><span class="opt-ico">🕯️</span><span class="opt-lbl" data-t="acLit">Lit Candle</span><span class="opt-sub" data-t="acLitSub">With flame</span></button>
+      <button class="opt" onclick="selGroup(this,'action','held in both hands showing the label clearly')"><span class="opt-ico">🤲</span><span class="opt-lbl" data-t="acHolding">Holding</span></button>
+      <button class="opt" onclick="selGroup(this,'action','flat lay top-down view surrounded by matching props')"><span class="opt-ico">📸</span><span class="opt-lbl" data-t="acFlatlay">Flat Lay</span></button>
+      <button class="opt" onclick="selGroup(this,'action','close-up of the label with candle glow bokeh background')"><span class="opt-ico">🔍</span><span class="opt-lbl" data-t="acLabelCU">Label Close-up</span></button>
+    </div></div>
+    <div class="dyn" id="action-bundle"><div style="padding:14px;background:var(--pink-wash);border-radius:10px;font-size:13px;color:var(--gray)" data-t="bundleNote">Scene automatically arranged for bundle — no action needed.</div></div>
+  </div>
+
+  <!-- STEP 6 CHARACTER -->
+  <div class="card" id="card-s6">
+    <div class="step-label"><div class="step-num sn6">6</div><div><div class="step-title" data-t="s6title">Character</div><div class="step-sub" data-t="s6sub">Who appears? (applies to all products)</div></div></div>
+    <hr class="divider">
+    <span class="mlbl" data-t="charType">Character type</span>
+    <div class="g4" style="margin-bottom:18px">
+      <button class="opt on" onclick="selChar(this,'hands')"><span class="opt-ico">🙌</span><span class="opt-lbl" data-t="cHands">Hands only</span><span class="opt-sub" data-t="cHandsSub">Works in Gemini</span></button>
+      <button class="opt" onclick="selChar(this,'girl')"><span class="opt-ico">👧</span><span class="opt-lbl" data-t="cGirl">Girl</span><span class="opt-sub">5-8 yrs</span></button>
+      <button class="opt" onclick="selChar(this,'boy')"><span class="opt-ico">👦</span><span class="opt-lbl" data-t="cBoy">Boy</span><span class="opt-sub">5-8 yrs</span></button>
+      <button class="opt" onclick="selChar(this,'teen-girl')"><span class="opt-ico">🧒</span><span class="opt-lbl" data-t="cTeenGirl">Teen Girl</span><span class="opt-sub">13-17</span></button>
+      <button class="opt" onclick="selChar(this,'teen-boy')"><span class="opt-ico">👱</span><span class="opt-lbl" data-t="cTeenBoy">Teen Boy</span><span class="opt-sub">13-17</span></button>
+      <button class="opt" onclick="selChar(this,'woman')"><span class="opt-ico">👩</span><span class="opt-lbl" data-t="cWoman">Woman</span><span class="opt-sub" data-t="cAdult">Adult</span></button>
+      <button class="opt" onclick="selChar(this,'man')"><span class="opt-ico">👨</span><span class="opt-lbl" data-t="cMan">Man</span><span class="opt-sub" data-t="cAdult">Adult</span></button>
+    </div>
+    <div id="ethnicitySection" style="display:none">
+      <span class="mlbl" data-t="ethnicity">Ethnicity / Features</span>
+      <div class="g4" style="margin-bottom:16px">
+        <button class="opt on" onclick="selGroup(this,'ethnicity','Latina')"><span class="opt-ico">🌺</span><span class="opt-lbl">Latina</span></button>
+        <button class="opt" onclick="selGroup(this,'ethnicity','blonde European')"><span class="opt-ico">👱‍♀️</span><span class="opt-lbl" data-t="eBlonde">Blonde / European</span></button>
+        <button class="opt" onclick="selGroup(this,'ethnicity','Asian')"><span class="opt-ico">🌸</span><span class="opt-lbl" data-t="eAsian">Asian</span></button>
+        <button class="opt" onclick="selGroup(this,'ethnicity','African American')"><span class="opt-ico">✊</span><span class="opt-lbl" data-t="eAfro">African American</span></button>
+        <button class="opt" onclick="selGroup(this,'ethnicity','Middle Eastern Mediterranean')"><span class="opt-ico">🌙</span><span class="opt-lbl" data-t="eMiddle">Arab / Mediterranean</span></button>
+        <button class="opt" onclick="selGroup(this,'ethnicity','redhead')"><span class="opt-ico">🦰</span><span class="opt-lbl" data-t="eRedhead">Redhead</span></button>
+        <button class="opt" onclick="selGroup(this,'ethnicity','Russian Eastern European')"><span class="opt-ico">❄️</span><span class="opt-lbl" data-t="eRussian">Russian / Slavic</span></button>
+        <button class="opt" onclick="selGroup(this,'ethnicity','South Asian Indian')"><span class="opt-ico">🪷</span><span class="opt-lbl" data-t="eSouthAsian">South Asian</span></button>
+      </div>
+      <span class="mlbl" data-t="skinTone">Skin tone</span>
+      <div class="skin-row">
+        <div><button class="skin on" style="background:#FDDBB4" onclick="selSkin(this,'light skin tone')" title="Light"></button></div>
+        <div><button class="skin" style="background:#E8B88A" onclick="selSkin(this,'medium-light skin tone')" title="Medium light"></button></div>
+        <div><button class="skin" style="background:#C68642" onclick="selSkin(this,'medium olive skin tone')" title="Medium"></button></div>
+        <div><button class="skin" style="background:#8D5524" onclick="selSkin(this,'medium-dark skin tone')" title="Medium dark"></button></div>
+        <div><button class="skin" style="background:#4A2912" onclick="selSkin(this,'dark skin tone')" title="Dark"></button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 7 PALETTE -->
+  <div class="card" id="card-s7">
+    <div class="step-label"><div class="step-num sn7">7</div><div><div class="step-title" data-t="s7title">Scene Color Palette</div><div class="step-sub" data-t="s7sub">Background and decoration colors</div></div></div>
+    <hr class="divider">
+    <div class="g2">
+      <button class="opt on" onclick="selGroup(this,'palette','background colors and props should subtly complement and harmonize with the product colors')"><span class="opt-ico">🎯</span><span class="opt-lbl" data-t="palMatch">Match Product</span><span class="opt-sub" data-t="palMatchSub">Colors complement design</span></button>
+      <button class="opt" onclick="selGroup(this,'palette','bold vibrant saturated colors, energetic and eye-catching')"><span class="opt-ico">🌈</span><span class="opt-lbl" data-t="palVibrant">Vibrant</span><span class="opt-sub" data-t="palVibrantSub">Bold saturated</span></button>
+      <button class="opt" onclick="selGroup(this,'palette','soft pastel tones, gentle pinks, lavenders, mint and cream')"><span class="opt-ico">🌸</span><span class="opt-lbl" data-t="palPastel">Soft Pastel</span><span class="opt-sub" data-t="palPastelSub">Gentle tones</span></button>
+      <button class="opt" onclick="selGroup(this,'palette','neutral clean tones, white beige and light gray, minimal and elegant')"><span class="opt-ico">🤍</span><span class="opt-lbl" data-t="palNeutral">Neutral / Clean</span><span class="opt-sub" data-t="palNeutralSub">White, beige, minimal</span></button>
+    </div>
+  </div>
+
+  <!-- BUTTONS -->
+  <div class="btn-row">
+    <button class="gen-btn" onclick="generate()"><span data-t="generateBtn">✦ Generate 3 Prompts</span></button>
+    <button class="clr-btn" onclick="clearAll()"><span data-t="clearBtn">↺ Clear</span></button>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="results" id="results">
+    <div class="res-hdr">
+      <h2 data-t="resultsTitle">Your Prompts Are Ready ✦</h2>
+      <p data-t="resultsDesc">Upload your product image and paste the prompt into your preferred platform</p>
+    </div>
+    <div class="pcard pc-g">
+      <div class="pbadge bg-t">✦ Gemini</div>
+      <div class="ptitle" data-t="geminiTitle">For Google Gemini</div>
+      <div class="pdesc" data-t="geminiDesc">No minors — upload your image + this prompt</div>
+      <div class="ptext" id="pt-gemini"></div>
+      <button class="cpbtn cp-t" onclick="cp('pt-gemini',this)" data-t="copyBtn">📋 Copy prompt</button>
+    </div>
+    <div class="pcard pc-gr">
+      <div class="pbadge bg-c">✦ Grok / ChatGPT</div>
+      <div class="ptitle" data-t="grokTitle">For Grok & ChatGPT GPT-4o</div>
+      <div class="pdesc" data-t="grokDesc">Upload your image + this prompt</div>
+      <div class="ptext" id="pt-grok"></div>
+      <button class="cpbtn cp-c" onclick="cp('pt-grok',this)" data-t="copyBtn">📋 Copy prompt</button>
+    </div>
+    <div class="pcard pc-mj">
+      <div class="pbadge bg-y">✦ Midjourney</div>
+      <div class="ptitle" data-t="mjTitle">For Midjourney</div>
+      <div class="pdesc" data-t="mjDesc">Add --cref [your image URL] at the end</div>
+      <div class="ptext" id="pt-mj"></div>
+      <button class="cpbtn cp-y" onclick="cp('pt-mj',this)" data-t="copyBtn">📋 Copy prompt</button>
+    </div>
+  </div>
+
+  <!-- DIGITAL RESULTS -->
+  <div class="results" id="digital-results">
+    <div class="res-hdr">
+      <h2 data-t="digitalResultsTitle">Your 5 Scene Prompts ✦</h2>
+      <p data-t="digitalResultsDesc">Upload your digital product cover and paste each prompt — one per scene</p>
+    </div>
+    <div id="digital-prompt-cards"></div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div class="footer-inner">
+    <div class="footer-name">Mockup Prompt Generator ✦ Johanna Digital Seattle</div>
+    <div class="footer-follow" data-t="followUs">Follow us</div>
+    <div class="footer-socials">
+      <a href="https://www.tiktok.com/@johannadigitalseattle" target="_blank" class="fsoc">TikTok</a>
+      <a href="https://www.pinterest.com/johannadigitalseattle" target="_blank" class="fsoc">Pinterest</a>
+    </div>
+    <div class="footer-legal">© 2025 Johanna Digital Seattle · <span data-t="allRights">All rights reserved</span> · <span data-t="noResale">Not for resale or redistribution</span> · <a href="https://johadigitalseattle.com" target="_blank">johadigitalseattle.com</a></div>
+  </div>
+</div>
+
+<script>
+// ===================== TRANSLATIONS =====================
+var T = {
+  en:{
+    s1title:'Product Type',s1sub:'What product are you showcasing?',
+    pNotebook:'Notebook',pBook:'Book',pTshirt:'T-Shirt',pTshirtSub:'T-shirt',
+    pHoodie:'Hoodie',pHoodieSub:'Sweatshirt',pMug:'Mug',pMugSub:'Mug',
+    pSticker:'Sticker',pTote:'Tote Bag',pToteSub:'Bag',pCandle:'Candle',pCandleSub:'Candle',
+    pBundle:'Bundle',pBundleSub:'Multiple products',
+    s2title:'Destination Platform',s2sub:'Where will you use this mockup?',
+    plAmazon:'Amazon KDP',plEtsy:'Etsy',plIG:'Instagram',plTT:'TikTok',plPIN:'Pinterest',plFB:'Facebook Ads',plWeb:'Website',
+    s3title:'Product Details',s3sub:'Specific options for your product',
+    nbSize:'Notebook size',bookSize:'Book size',
+    customSize:'Custom Size',customSizeSub:'Your measurement',
+    width:'Width',height:'Height',unit:'Unit',
+    brand:'Brand',shirtColor:'Shirt color',hoodieColor:'Hoodie color',
+    colWhite:'White',colBlack:'Black',colGray:'Gray',colNavy:'Navy',colRed:'Red',
+    mugStyle:'Mug style',mugWhite:'Classic White',mugWhiteSub:'Classic white',
+    mugBlack:'Black Interior',mugBlackSub:'Black inside',mugMagic:'Magic Mug',mugLatte:'Tall / Latte',mugLatteSub:'Tall café style',
+    stickerType:'What type of sticker?',
+    stickerInd:'Individual Sticker',stickerIndSub:'Single sticker',
+    stickerSheet:'Sticker Sheet / Pack',stickerSheetSub:'Full pack',
+    stickerForm:'Sticker shape',dieCutSub:'Follows border',circular:'Circular',square:'Square',
+    stickerSize:'Sticker size',popular:'Popular',large:'Large',
+    packPresentation:'Pack presentation',
+    sheetFlatlay:'Flat Sheet',sheetTransparent:'Clear Package',sheetTransparentSub:'Pro Etsy style',sheetMulti:'Multi-Scene',
+    collectionName:'Collection name (optional)',collectionPH:'E.g.: "Girls Love Pilates"',
+    textStyle:'Text style',tsVibrant:'Vibrant Pink',tsCandy:'Candy / Pastel',tsHolo:'Holographic',tsCustomSub:'Describe your style',
+    customTextPH:'E.g.: "gold glitter retro 70s font"',
+    bagColor:'Bag color',natural:'Natural',
+    candleType:'Candle type',candleGlass:'Glass Jar',candleTin:'Tin',candlePillar:'Pillar',
+    selectBundle:'Select bundle products',bundleChoose:'Choose products...',
+    products:'Products',selectAll:'Select all',phoneCase:'Phone case',
+    s4title:'Scene / Setting',s4sub:'Where is the product located?',
+    scBoho:'Boho Room',scWood:'Wood Table',scMarble:'Marble Flat Lay',scOutdoor:'Outdoor Garden',
+    scDesk:'School Desk',scBed:'Cozy Bed',scNook:'Reading Nook',scBookshelf:'Bookshelf',
+    scCafe:'Coffee Shop',scPark:'Outdoor Park',scUrban:'Urban Street',scStudio:'White Studio',
+    scBohoBR:'Boho Bedroom',scMinimal:'Minimal Room',scAutumn:'Autumn Park',scBrick:'Brick Wall',
+    scMountain:'Mountain/Forest',scCozyC:'Cozy Café',scCroissant:'Table & Croissant',scRain:'Rainy Window',
+    scHomeOffice:'Home Office',scMarbleK:'Marble Kitchen',scPatio:'Outdoor Patio',
+    scHandHold:'Holding',scTumbler:'Bottle/Tumbler',scJournal:'Journal/Planner',scFun:'Fun Background',
+    scHoldPack:'Holding Pack',scColorBG:'Colorful BG',scWallHook:'Wall Hook',scFlatlay:'Flat Lay',
+    scMarket:'Farmers Market',scVanity:'Bathroom Vanity',scCozyLR:'Cozy Living Room',scNightstand:'Nightstand',
+    scBohoFloral:'Boho Floral',scGift:'Gift Style',
+    s5title:'Action',s5sub:'What is happening in the scene?',
+    acHolding:'Holding',acHoldingSub:'Showing cover',acWriting:'Writing',acWritingSub:'Writing inside',
+    acReading:'Reading',acFlatlay:'Flat Lay',acCloseup:'Close-up',
+    acFront:'Front Pose',acSide:'Side Angle',acLooking:'Looking at Camera',acDesignCU:'Design Close-up',
+    acMugSub:'Both hands, steam',acSipping:'Taking a Sip',
+    acPinching:'Pinching',acPeeling:'Peeling & Placing',acMacro:'Macro Close-up',
+    acAngledFL:'Angled Flat Lay',acHoldPack:'Holding Pack',acPackCU:'Pack Close-up',
+    acShoulder:'Over Shoulder',acHandHeld:'Hand Held',
+    acLit:'Lit Candle',acLitSub:'With flame',acLabelCU:'Label Close-up',
+    bundleNote:'Scene automatically arranged for bundle — no action needed.',
+    s6title:'Character',s6sub:'Who appears? (applies to all products)',
+    charType:'Character type',
+    cHands:'Hands only',cHandsSub:'Works in Gemini',cGirl:'Girl',cBoy:'Boy',
+    cTeenGirl:'Teen Girl',cTeenBoy:'Teen Boy',cWoman:'Woman',cMan:'Man',cAdult:'Adult',
+    ethnicity:'Ethnicity / Features',eBlonde:'Blonde / European',eAsian:'Asian',
+    eAfro:'African American',eMiddle:'Arab / Mediterranean',eRedhead:'Redhead',
+    eRussian:'Russian / Slavic',eSouthAsian:'South Asian',
+    skinTone:'Skin tone',
+    s7title:'Scene Color Palette',s7sub:'Background and decoration colors',
+    palMatch:'Match Product',palMatchSub:'Colors complement design',
+    palVibrant:'Vibrant',palVibrantSub:'Bold saturated',
+    palPastel:'Soft Pastel',palPastelSub:'Gentle tones',
+    palNeutral:'Neutral / Clean',palNeutralSub:'White, beige, minimal',
+    generateBtn:'✦ Generate 3 Prompts',clearBtn:'↺ Clear',
+    resultsTitle:'Your Prompts Are Ready ✦',resultsDesc:'Upload your product image and paste the prompt into your preferred platform',
+    geminiTitle:'For Google Gemini',geminiDesc:'No minors — upload your image + this prompt',
+    grokTitle:'For Grok & ChatGPT GPT-4o',grokDesc:'Upload your image + this prompt',
+    mjTitle:'For Midjourney',mjDesc:'Add --cref [your image URL] at the end',
+    copyBtn:'📋 Copy prompt',followUs:'Follow us',allRights:'All rights reserved',noResale:'Not for resale or redistribution',
+    hdrTag:'✦ Exclusive Tool — Johanna Digital Seattle',
+    hdrDesc:'Generate hyper-realistic prompts for any product. Compatible with Gemini, Grok, ChatGPT & Midjourney.',
+    pwSub:'Johanna Digital Seattle<br>Exclusive tool — private access',pwLbl:'Access key',pwBtn:'✦ Enter',pwErr:'❌ Incorrect key. Please try again.',pwFollowUs:'Follow us',
+    mjNote:'⚠️ Add at the end: --cref [URL of your product image]',
+    bundleAlert:'⚠️ Please select at least one product for the bundle.',
+    nbBinding:'Binding type',bindKdp:'KDP / Perfect Bound',bindKdpSub:'Flat spine — Amazon KDP ✓',bindSpiral:'Spiral / Wire-O',bindSpiralSub:'Metal spiral binding',
+    interiorType:'Interior page type',intGrid:'Grid paper',intLinedBW:'Lined B&W',intLinedBlue:'Lined blue',intCallig:'Calligraphy',intCustom:'Custom',intCustomSub:'My own design',
+    customNoticeTitle:'📎 Custom instructions:',customNoticeText:'Upload 2 images to the AI — <strong>Image A = cover</strong>, <strong>Image B = interior page</strong>.<br>2 special prompts will be generated: one for Gemini ✅ and one for ChatGPT.',
+    pDigital:'Digital Product',pDigitalSub:'Screen mockup',
+    deviceType:'Device / Screen',
+    devLaptop:'Laptop',devImac:'Desktop / iMac',devIpad:'iPad',devIphone:'iPhone',
+    s4bTitle:'Scenes',s4bSub:'5 scenes will be generated — all selected automatically',
+    digitalNote:'5 scene prompts will be generated automatically for the selected device.',
+    handOption:'Hand option (optional)',noHand:'No hand',noHandSub:'Device only',
+    handPencil:'Apple Pencil hand',handPencilSub:'Writing on screen',
+    handHolding:'Hand holding',handHoldingSub:'Natural grip',
+    digitalResultsTitle:'Your 5 Scene Prompts ✦',digitalResultsDesc:'Upload your digital product cover and paste each prompt — one per scene'
+  },
+  es:{
+    s1title:'Tipo de producto',s1sub:'¿Qué producto vas a mostrar?',
+    pNotebook:'Cuaderno',pBook:'Libro',pTshirt:'Camiseta',pTshirtSub:'T-shirt',
+    pHoodie:'Hoodie',pHoodieSub:'Sudadera',pMug:'Taza',pMugSub:'Mug',
+    pSticker:'Sticker',pTote:'Tote Bag',pToteSub:'Bolsa',pCandle:'Vela',pCandleSub:'Candle',
+    pBundle:'Bundle',pBundleSub:'Varios productos',
+    s2title:'Plataforma de destino',s2sub:'¿Dónde vas a usar este mockup?',
+    plAmazon:'Amazon KDP',plEtsy:'Etsy',plIG:'Instagram',plTT:'TikTok',plPIN:'Pinterest',plFB:'Facebook Ads',plWeb:'Página Web',
+    s3title:'Detalles del producto',s3sub:'Opciones específicas según tu producto',
+    nbSize:'Tamaño del cuaderno',bookSize:'Tamaño del libro',
+    customSize:'Custom Size',customSizeSub:'Tu medida',
+    width:'Ancho',height:'Alto',unit:'Unidad',
+    brand:'Marca',shirtColor:'Color de la camiseta',hoodieColor:'Color del hoodie',
+    colWhite:'Blanco',colBlack:'Negro',colGray:'Gris',colNavy:'Marino',colRed:'Rojo',
+    mugStyle:'Estilo de taza',mugWhite:'Blanca clásica',mugWhiteSub:'Classic white',
+    mugBlack:'Interior negro',mugBlackSub:'Black inside',mugMagic:'Mágica',mugLatte:'Tall / Latte',mugLatteSub:'Alto estilo café',
+    stickerType:'¿Qué tipo de sticker?',
+    stickerInd:'Sticker Individual',stickerIndSub:'Un solo sticker',
+    stickerSheet:'Sticker Sheet / Pack',stickerSheetSub:'Pack completo',
+    stickerForm:'Forma del sticker',dieCutSub:'Respeta el borde',circular:'Circular',square:'Cuadrado',
+    stickerSize:'Tamaño del sticker',popular:'Popular',large:'Grande',
+    packPresentation:'Presentación del pack',
+    sheetFlatlay:'Hoja suelta',sheetTransparent:'Empaque transparente',sheetTransparentSub:'Estilo pro Etsy',sheetMulti:'Escena múltiple',
+    collectionName:'Nombre de colección (opcional)',collectionPH:'Ej: "Girls Love Pilates"',
+    textStyle:'Estilo del texto',tsVibrant:'Pink vibrante',tsCandy:'Candy / Pastel',tsHolo:'Holográfico',tsCustomSub:'Describe tu estilo',
+    customTextPH:'Ej: "letras doradas glitter estilo retro"',
+    bagColor:'Color de la bolsa',natural:'Natural',
+    candleType:'Tipo de vela',candleGlass:'Frasco vidrio',candleTin:'Lata / Tin',candlePillar:'Pilar',
+    selectBundle:'Selecciona los productos del bundle',bundleChoose:'Elige los productos...',
+    products:'Productos',selectAll:'Seleccionar todos',phoneCase:'Funda de celular',
+    s4title:'Escena / Ambiente',s4sub:'¿Dónde se encuentra el producto?',
+    scBoho:'Boho Room',scWood:'Mesa madera',scMarble:'Marble flat lay',scOutdoor:'Outdoor jardín',
+    scDesk:'Escritorio',scBed:'Cama acogedora',scNook:'Reading nook',scBookshelf:'Librería',
+    scCafe:'Café / Coffee shop',scPark:'Outdoor parque',scUrban:'Urban street',scStudio:'Studio blanco',
+    scBohoBR:'Boho bedroom',scMinimal:'Minimalist room',scAutumn:'Autumn park',scBrick:'Brick wall',
+    scMountain:'Outdoor montaña',scCozyC:'Cafetería acogedora',scCroissant:'Mesa con croissant',scRain:'Ventana con lluvia',
+    scHomeOffice:'Home office',scMarbleK:'Marble kitchen',scPatio:'Outdoor patio',
+    scHandHold:'Manos sosteniendo',scTumbler:'Botella / Tumbler',scJournal:'Journal / Planner',scFun:'Fun background',
+    scHoldPack:'Sosteniendo el pack',scColorBG:'Fondo colorido',scWallHook:'Wall hook',scFlatlay:'Flat lay',
+    scMarket:'Farmers market',scVanity:'Baño / Vanity',scCozyLR:'Living room cozy',scNightstand:'Nightstand',
+    scBohoFloral:'Boho floral',scGift:'Gift / Regalo',
+    s5title:'Acción',s5sub:'¿Qué está pasando en la escena?',
+    acHolding:'Sosteniendo',acHoldingSub:'Mostrando portada',acWriting:'Escribiendo',acWritingSub:'Dentro del producto',
+    acReading:'Mirando / Leyendo',acFlatlay:'Flat lay',acCloseup:'Close-up portada',
+    acFront:'Posando de frente',acSide:'Posando de lado',acLooking:'Mirando cámara',acDesignCU:'Close-up diseño',
+    acMugSub:'Dos manos, vapor',acSipping:'Tomando café',
+    acPinching:'Pinzando / Sosteniendo',acPeeling:'Pegando sticker',acMacro:'Close-up macro',
+    acAngledFL:'Flat lay inclinado',acHoldPack:'Sosteniendo el pack',acPackCU:'Close-up del pack',
+    acShoulder:'Al hombro',acHandHeld:'En la mano',
+    acLit:'Encendida',acLitSub:'Con llama',acLabelCU:'Close-up label',
+    bundleNote:'La escena se arregla automáticamente para el bundle — no se necesita acción.',
+    s6title:'Personaje',s6sub:'¿Quién aparece? (aplica para todos los productos)',
+    charType:'Tipo de personaje',
+    cHands:'Solo manos',cHandsSub:'Funciona en Gemini',cGirl:'Niña',cBoy:'Niño',
+    cTeenGirl:'Jovencita',cTeenBoy:'Joven',cWoman:'Mujer',cMan:'Hombre',cAdult:'Adulto/a',
+    ethnicity:'Etnia / Rasgos',eBlonde:'Rubia / Europea',eAsian:'Asiática',
+    eAfro:'Afroamericana',eMiddle:'Árabe / Mediterránea',eRedhead:'Pelirroja',
+    eRussian:'Rusa / Eslava',eSouthAsian:'Sur Asiática',
+    skinTone:'Tono de piel',
+    s7title:'Paleta del ambiente',s7sub:'Colores del fondo y decoración',
+    palMatch:'Match producto',palMatchSub:'Colores complementan el diseño',
+    palVibrant:'Vibrante',palVibrantSub:'Colores saturados',
+    palPastel:'Pastel suave',palPastelSub:'Tonos suaves',
+    palNeutral:'Neutro / Limpio',palNeutralSub:'Blanco, beige, minimal',
+    generateBtn:'✦ Generar 3 Prompts',clearBtn:'↺ Limpiar',
+    resultsTitle:'Tus Prompts Listos ✦',resultsDesc:'Sube tu imagen del producto y pega el prompt en la plataforma que prefieras',
+    geminiTitle:'Para Google Gemini',geminiDesc:'Sin menores — sube tu imagen + este prompt',
+    grokTitle:'Para Grok & ChatGPT GPT-4o',grokDesc:'Sube tu imagen + este prompt',
+    mjTitle:'Para Midjourney',mjDesc:'Agrega --cref [URL de tu imagen] al final',
+    copyBtn:'📋 Copiar prompt',followUs:'Follow us',allRights:'Todos los derechos reservados',noResale:'No para reventa o redistribución',
+    hdrTag:'✦ Herramienta Exclusiva — Johanna Digital Seattle',
+    hdrDesc:'Genera prompts hiperrealistas para cualquier producto. Compatible con Gemini, Grok, ChatGPT y Midjourney.',
+    pwSub:'Johanna Digital Seattle<br>Herramienta exclusiva — acceso privado',pwLbl:'Clave de acceso',pwBtn:'✦ Entrar',pwErr:'❌ Clave incorrecta. Intenta de nuevo.',pwFollowUs:'Síguenos',
+    mjNote:'⚠️ Agrega al final: --cref [URL de tu imagen de producto]',
+    bundleAlert:'⚠️ Selecciona al menos un producto para el bundle.',
+    nbBinding:'Tipo de encuadernación',bindKdp:'KDP / Perfect Bound',bindKdpSub:'Lomo plano — Amazon KDP ✓',bindSpiral:'Espiral / Wire-O',bindSpiralSub:'Espiral metálico',
+    interiorType:'Tipo de página interior',intGrid:'Cuadriculada',intLinedBW:'Lineal B&N',intLinedBlue:'Lineal azul',intCallig:'Caligrafía',intCustom:'Custom',intCustomSub:'Mi propio diseño',
+    customNoticeTitle:'📎 Instrucciones para Custom:',customNoticeText:'Sube 2 imágenes a la IA — <strong>Image A = portada</strong>, <strong>Image B = página interior</strong>.<br>Se generan 2 prompts especiales: uno para Gemini ✅ y uno para ChatGPT.',
+    pDigital:'Producto Digital',pDigitalSub:'Mockup en pantalla',
+    deviceType:'Dispositivo / Pantalla',
+    devLaptop:'Laptop',devImac:'Desktop / iMac',devIpad:'iPad',devIphone:'iPhone',
+    s4bTitle:'Escenas',s4bSub:'Se generarán 5 escenas automáticamente',
+    digitalNote:'Se generarán 5 prompts de escenas automáticamente para el dispositivo seleccionado.',
+    handOption:'Opción de mano (opcional)',noHand:'Sin mano',noHandSub:'Solo el dispositivo',
+    handPencil:'Mano con Apple Pencil',handPencilSub:'Escribiendo en pantalla',
+    handHolding:'Mano sosteniendo',handHoldingSub:'Agarre natural',
+    digitalResultsTitle:'Tus 5 Prompts de Escenas ✦',digitalResultsDesc:'Sube tu imagen de portada y pega cada prompt — uno por escena'
+  }
+};
+var LANG = 'en';
+
+function setLang(lang){
+  LANG = lang;
+  document.getElementById('btnEN').classList.toggle('on', lang==='en');
+  document.getElementById('btnES').classList.toggle('on', lang==='es');
+  var t = T[lang];
+  // update all data-t elements
+  document.querySelectorAll('[data-t]').forEach(function(el){
+    var key = el.getAttribute('data-t');
+    if(t[key] !== undefined) el.innerHTML = t[key];
+  });
+  // update placeholders
+  document.querySelectorAll('[data-t-ph]').forEach(function(el){
+    var key = el.getAttribute('data-t-ph');
+    if(t[key] !== undefined) el.placeholder = t[key];
+  });
+  // update fixed elements
+  document.getElementById('hdrDesc').textContent = t.hdrDesc;
+
+
+
+
+
+  // update bundle trigger if not changed
+  var bt = document.getElementById('bundleTriggerText');
+  if(bt && bt.getAttribute('data-t')==='bundleChoose') bt.textContent = t.bundleChoose;
+  // update bundle all btn
+  var bab = document.getElementById('bundleAllBtn');
+  if(bab) bab.textContent = bundleAllSelected ? (lang==='es'?'Deseleccionar todos':'Deselect all') : t.selectAll;
+}
+
+// ===================== STATE =====================
+var S = {
+  product:'notebook',platform:'amazon',
+  size:'7.5 x 9.25 inches',brand:'Bella Canvas',shirtColor:'White',
+  mugstyle:'classic white ceramic mug',
+  stickerform:'die-cut sticker following the exact shape and border of the uploaded design',
+  stickersize:'3x3 inch',stickerType:'individual',packPresentation:'flatlay',
+  textstyle:'vibrant hot pink bold bubbly typography with white outline, fun and eye-catching',
+  candletype:'glass jar candle with label',
+  bundleProducts:[],
+  device:'laptop', digitalHand:'none',
+  nbBinding:'kdp', interiorPage:'grid',
+  scene:'a warm boho living room with natural plants, macrame wall decor and soft window light',
+  action:'holding the product up with both hands at chest level displaying the front cover clearly',
+  char:'hands',ethnicity:'Latina',skin:'light skin tone',
+  palette:'background colors and props should subtly complement and harmonize with the product colors',
+  unit:'in',customW:'',customH:''
+};
+
+var INTERIOR_PROMPTS = {
+  'grid':'grid paper interior pages with small uniform square grid pattern, light gray grid lines on white paper',
+  'lined-bw':'standard ruled lined pages, black and white, horizontal lines evenly spaced, classic Amazon KDP composition notebook interior',
+  'lined-blue':'ruled lined pages with blue horizontal lines on white paper, standard college-ruled style',
+  'calligraphy':'calligraphy practice guide pages with slanted dashed lines and baseline guides for lettering practice'
+};
+
+var PROD_LABELS = {notebook:'composition notebook',book:'book',tshirt:'t-shirt',hoodie:'hoodie',mug:'mug',sticker:'sticker',totebag:'tote bag',candle:'candle',bundle:'bundle',digital:'digital product'};
+
+function selNbBinding(btn,val){
+  btn.closest('.g2').querySelectorAll('.opt').forEach(function(b){b.classList.remove('on')});
+  btn.classList.add('on');
+  S.nbBinding=val;
+}
+
+function selInterior(btn,val){
+  btn.closest('.g2').querySelectorAll('.opt').forEach(function(b){b.classList.remove('on')});
+  btn.classList.add('on');
+  S.interiorPage=val;
+  var notice=document.getElementById('interior-custom-notice');
+  if(notice) notice.style.display=val==='custom'?'block':'none';
+}
+
+function showInterior(){
+  S.action='writing';
+  var box=document.getElementById('interior-page-box');
+  if(box) box.style.display='block';
+}
+
+function hideInterior(){
+  var box=document.getElementById('interior-page-box');
+  if(box) box.style.display='none';
+  var notice=document.getElementById('interior-custom-notice');
+  if(notice) notice.style.display='none';
+}
+
+
+
+// ===================== BUNDLE =====================
+var bundleAllSelected = false;
+function toggleBundleMenu(){
+  var menu=document.getElementById('bundleMenu');
+  var trigger=document.getElementById('bundleTrigger');
+  var arrow=document.getElementById('bundleArrow');
+  var isOpen=menu.classList.contains('show');
+  menu.classList.toggle('show',!isOpen);
+  trigger.classList.toggle('open',!isOpen);
+  arrow.textContent=isOpen?'▾':'▴';
+}
+function updateBundleSel(){
+  var checks=document.querySelectorAll('#bundleMenu input[type=checkbox]:checked');
+  S.bundleProducts=Array.from(checks).map(function(c){return c.value;});
+  var bt=document.getElementById('bundleTriggerText');
+  var sel=document.getElementById('bundleSelectedText');
+  var t=T[LANG];
+  if(S.bundleProducts.length===0){
+    bt.textContent=t.bundleChoose; bt.setAttribute('data-t','bundleChoose');
+    sel.textContent='';
+  } else {
+    bt.removeAttribute('data-t');
+    var n=S.bundleProducts.length;
+    bt.textContent=n+' '+(LANG==='es'?('producto'+(n>1?'s':'')+' seleccionado'+(n>1?'s':'')):(n>1?'products selected':'product selected'));
+    sel.textContent='✓ Bundle: '+S.bundleProducts.join(' · ');
+  }
+}
+function toggleAllBundle(){
+  var allBtn=document.getElementById('bundleAllBtn');
+  var checks=document.querySelectorAll('#bundleMenu input[type=checkbox]');
+  bundleAllSelected=!bundleAllSelected;
+  checks.forEach(function(c){c.checked=bundleAllSelected;});
+  allBtn.textContent=bundleAllSelected?(LANG==='es'?'Deseleccionar todos':'Deselect all'):T[LANG].selectAll;
+  updateBundleSel();
+}
+
+// ===================== SELECTION HELPERS =====================
+// ===================== DIGITAL DEVICE =====================
+var DIGITAL_SCENES = {
+  laptop:[
+    {name:'Luxury White & Gold', desc:'a luxury home office with a glass desk with gold legs, white hydrangea flowers in a crystal vase, a white fluffy chair, gold lamp, soft natural window light, white and gold color palette, ultra premium atmosphere'},
+    {name:'Cozy Neutral Minimal', desc:'a cozy beige sofa setting, the laptop resting on soft linen cushions, a latte coffee and open magazine nearby, warm neutral tones, afternoon soft light, relaxed and minimal aesthetic'},
+    {name:'All Pink Glam', desc:'a fully pink aesthetic room, pink curtains, pink round table, pink walls with elegant molding, rose pink decor, glamorous and dreamy all-pink atmosphere, dramatic soft shadows'},
+    {name:'Pink Dreamy Desk', desc:'a pastel pink home desk by a window with winter snow view outside, pink lamp, pink pencil holder, pink mouse and accessories, soft pink everything, dreamy kawaii aesthetic'},
+    {name:'Rose Gold Office', desc:'a modern feminine home office with a white desk, large peony flower arrangements in pink vases, rose gold metal shelves in background, rose gold MacBook color, warm natural light, elegant and stylish'}
+  ],
+  imac:[
+    {name:'Luxury Home Office', desc:'a luxury home office setup with an iMac 24 M3 on a white marble desk, white flowers, gold accents, velvet chair, soft window light, premium elegant atmosphere'},
+    {name:'Professional Studio', desc:'a clean professional studio setup with the iMac 24 M3, white walls, subtle ring light glow, minimal white desk, few props, crisp and modern professional look'},
+    {name:'Minimal White Clean', desc:'an all-white bright airy desk setup with the iMac 24 M3, simple white frame, one small plant, very minimal, clean and calm, Scandinavian style'},
+    {name:'Rose Gold Glam', desc:'a feminine rose gold desk setup with the iMac 24 M3, blush pink flowers, rose gold desk accessories, soft warm light, glamorous and stylish'},
+    {name:'Dark Moody Creative', desc:'a moody dark creative workspace with the iMac 24 M3, dark wood desk, pendant lamp warm glow, plants, books, artistic and editorial atmosphere, deep rich tones'}
+  ],
+  ipad:[
+    {name:'Cozy Bed', desc:'an iPad Pro 13 M4 resting on white linen bedding with soft white pillows, warm golden morning light, cozy bedroom setting, peaceful and relaxed'},
+    {name:'Sofa Cozy', desc:'an iPad Pro 13 M4 on a beige linen sofa with a soft throw blanket, latte coffee cup nearby, afternoon warm light, cozy and inviting'},
+    {name:'Coffee Table', desc:'an iPad Pro 13 M4 on a white marble coffee table with a fresh latte, small pink flowers, soft bokeh background, lifestyle editorial feel'},
+    {name:'Marble Flat Lay', desc:'top-down flat lay of an iPad Pro 13 M4 on a white marble surface, surrounded by small matching lifestyle props, gold pen, flowers, clean and elegant'},
+    {name:'Outdoor Garden', desc:'an iPad Pro 13 M4 on an outdoor garden table, soft green bokeh background, natural sunlight, fresh flowers nearby, bright and airy outdoor lifestyle'}
+  ],
+  iphone:[
+    {name:'Flat Lay + Accessories', desc:'top-down flat lay of an iPhone 16 Pro Max natural titanium on a white marble surface, surrounded by gold jewelry accessories, small flowers, elegant feminine props'},
+    {name:'Coffee Table', desc:'an iPhone 16 Pro Max natural titanium on a cafe wooden table, warm bokeh background, latte art coffee beside it, cozy lifestyle atmosphere'},
+    {name:'Aesthetic Bed', desc:'an iPhone 16 Pro Max natural titanium on soft white linen sheets, morning light, peaceful and clean aesthetic bedroom setting'},
+    {name:'Outdoor Lifestyle', desc:'an iPhone 16 Pro Max natural titanium held naturally with blurred outdoor background, green bokeh, natural bright sunlight, lifestyle photography'},
+    {name:'Marble Minimal', desc:'an iPhone 16 Pro Max natural titanium on a clean white marble surface, one small flower, minimal props, crisp elegant and clean product shot'}
+  ]
+};
+
+var DEVICE_LABELS = {
+  laptop:'MacBook Pro M3 14-inch (2024), silver color, with Liquid Retina XDR display',
+  imac:'iMac 24-inch M3 (2024), white and silver, ultra-thin design with 4.5K Retina display',
+  ipad:'iPad Pro 13-inch M4 (2024) with Apple Pencil Pro, Space Black, ultra-thin design',
+  iphone:'iPhone 16 Pro Max (2024), Natural Titanium finish, 6.9-inch Super Retina XDR display'
+};
+
+function selDigScene(btn, idxOrCustom){
+  var container = btn.closest('.g3');
+  container.querySelectorAll('.opt').forEach(function(b){b.classList.remove('on')});
+  btn.classList.add('on');
+  var cb = document.getElementById('dig-custom-box');
+  if(idxOrCustom==='custom'){
+    S.digitalSceneIdx = 'custom';
+    if(cb) cb.style.display='block';
+  } else {
+    S.digitalSceneIdx = idxOrCustom;
+    if(cb) cb.style.display='none';
+  }
+}
+
+function selDevice(btn, val){
+  btn.closest('.g2').querySelectorAll('.opt').forEach(function(b){b.classList.remove('on')});
+  btn.classList.add('on');
+  S.device = val;
+  S.digitalSceneIdx = 0;
+  // swap scene sets
+  document.querySelectorAll('[id^="dscene-"]').forEach(function(d){d.classList.remove('show')});
+  var ds = document.getElementById('dscene-'+val);
+  if(ds){
+    ds.classList.add('show');
+    // reset scene selection to first button
+    var btns = ds.querySelectorAll('.opt');
+    btns.forEach(function(b){b.classList.remove('on')});
+    if(btns[0]) btns[0].classList.add('on');
+  }
+  // hide custom box
+  var cb = document.getElementById('dig-custom-box');
+  if(cb) cb.style.display='none';
+  // show/hide hand options
+  var ho = document.getElementById('digital-hand-opts');
+  if(ho){
+    ho.style.display = (val==='ipad'||val==='iphone') ? 'block' : 'none';
+    var pencilBtn = document.getElementById('btnHandPencil');
+    var phoneBtn = document.getElementById('btnHandPhone');
+    if(pencilBtn) pencilBtn.style.display = val==='ipad' ? 'block' : 'none';
+    if(phoneBtn) phoneBtn.style.display = val==='iphone' ? 'block' : 'none';
+    // reset hand
+    ho.querySelectorAll('.opt').forEach(function(b){b.classList.remove('on')});
+    var firstVis = ho.querySelector('.opt:not([style*="display: none"])');
+    if(firstVis) firstVis.classList.add('on');
+    S.digitalHand = 'none';
+  }
+}
+
+function generateDigital(){
+  var t = T[LANG];
+  var device = S.device;
+  var scenes = DIGITAL_SCENES[device];
+  var deviceLabel = DEVICE_LABELS[device];
+  var hand = S.digitalHand || 'none';
+  var sceneIdx = S.digitalSceneIdx !== undefined ? S.digitalSceneIdx : 0;
+
+  var scene;
+  if(sceneIdx === 'custom'){
+    var customText = document.getElementById('dig-custom-input') ? document.getElementById('dig-custom-input').value.trim() : '';
+    if(!customText){ alert(LANG==='es' ? '⚠️ Describe tu escena personalizada primero.' : '⚠️ Please describe your custom scene first.'); return; }
+    scene = {name: 'Custom Scene', desc: customText};
+  } else {
+    scene = scenes[sceneIdx];
+  }
+
+  var handStr = '';
+  if(hand==='pencil') handStr = ' An Apple Pencil Pro is gently resting on or touching the screen, as if drawing or writing.';
+  if(hand==='holding') handStr = ' A hand is naturally holding the device from the side, thumb visible, in a relaxed lifestyle grip.';
+
+  var base = 'Hyper-realistic product mockup photography.\n\n'+
+    'A '+deviceLabel+' is displayed in '+scene.desc+'.'+handStr+'\n\n'+
+    'The screen of the device clearly shows a digital product design — crisp, sharp, well-lit and fully readable on the display.\n\n'+
+    'Professional product photography, 85mm lens, shallow depth of field, 8K resolution, cinematic lighting.\n\n'+
+    'CRITICAL: The screen must display the uploaded reference image EXACTLY as provided — same colors, same layout, same design, same typography. Do NOT redesign, reinterpret or modify the screen content in any way. Preserve original artwork 100%.';
+
+  var gemini = base;
+  var grok = base;
+  var mj = 'Hyper-realistic product mockup photography, a '+deviceLabel+' in '+scene.desc+', '+handStr+' the screen displays a digital product design clearly, 85mm lens, shallow depth of field, cinematic lighting, 8K, photorealistic --v 6.1 --ar 4:5 --q 2\n\n'+t.mjNote;
+
+  document.getElementById('pt-gemini').textContent = gemini;
+  document.getElementById('pt-grok').textContent = grok;
+  document.getElementById('pt-mj').textContent = mj;
+
+  // Update result card titles for digital context
+  var gemT = document.querySelector('#results .ptitle');
+  document.getElementById('digital-results').classList.remove('show');
+  var r = document.getElementById('results');
+  r.classList.add('show');
+  r.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function selProd(btn,val){
+  btn.closest('.g4').querySelectorAll('.opt').forEach(function(b){b.classList.remove('on')});
+  btn.classList.add('on');
+  S.product=val;
+  document.querySelectorAll('.dyn').forEach(function(d){d.classList.remove('show')});
+
+  var s4=document.getElementById('card-s4');
+  var s5=document.getElementById('card-s5');
+  var s6=document.getElementById('card-s6');
+  var s7=document.getElementById('card-s7');
+  var dsc=document.getElementById('digital-scene-card');
+
+  if(val==='digital'){
+    // hide standard steps, show digital scene card
+    if(s4) s4.style.display='none';
+    if(s5) s5.style.display='none';
+    if(s6) s6.style.display='none';
+    if(s7) s7.style.display='none';
+    if(dsc) dsc.style.display='block';
+    var dyn=document.getElementById('dyn-digital');
+    if(dyn) dyn.classList.add('show');
+    // show laptop scenes by default
+    S.device='laptop'; S.digitalSceneIdx=0;
+    document.querySelectorAll('[id^="dscene-"]').forEach(function(d){d.classList.remove('show')});
+    var dl=document.getElementById('dscene-laptop');
+    if(dl){
+      dl.classList.add('show');
+      var btns=dl.querySelectorAll('.opt');
+      btns.forEach(function(b){b.classList.remove('on')});
+      if(btns[0]) btns[0].classList.add('on');
+    }
+    // reset device buttons
+    var devBtns=document.querySelectorAll('#dyn-digital .opt');
+    devBtns.forEach(function(b){b.classList.remove('on')});
+    if(devBtns[0]) devBtns[0].classList.add('on');
+    var ho=document.getElementById('digital-hand-opts');
+    if(ho) ho.style.display='none';
+    var cb=document.getElementById('dig-custom-box');
+    if(cb) cb.style.display='none';
+    S.digitalHand='none';
+    return;
+  }
+
+  // Restore standard steps for all other products
+  if(s4) s4.style.display='block';
+  if(s5) s5.style.display='block';
+  if(s6) s6.style.display='block';
+  if(s7) s7.style.display='block';
+  if(dsc) dsc.style.display='none';
+
+  if(val==='bundle'){
+    var dynb=document.getElementById('dyn-bundle');
+    if(dynb) dynb.classList.add('show');
+    var scb=document.getElementById('scene-bundle');
+    if(scb){scb.classList.add('show');resetFirstOpt(scb);}
+    var acb=document.getElementById('action-bundle');
+    if(acb) acb.classList.add('show');
+    return;
+  }
+  var dyn=document.getElementById('dyn-'+val);
+  if(dyn) dyn.classList.add('show');
+  if(val==='sticker'){
+    S.stickerType='individual';
+    document.getElementById('sticker-individual-opts').style.display='block';
+    document.getElementById('sticker-sheet-opts').style.display='none';
+    var si=document.getElementById('scene-sticker-individual');
+    var ai=document.getElementById('action-sticker-individual');
+    if(si){si.classList.add('show');resetFirstOpt(si);}
+    if(ai){ai.classList.add('show');resetFirstOpt(ai);}
+    return;
+  }
+  var sc=document.getElementById('scene-'+val);
+  if(sc){sc.classList.add('show');resetFirstOpt(sc);}
+  else{var sf=document.getElementById('scene-notebook');if(sf){sf.classList.add('show');resetFirstOpt(sf);}}
+  var ac=document.getElementById('action-'+val);
+  if(ac){ac.classList.add('show');resetFirstOpt(ac);}
+  else{var af=document.getElementById('action-notebook');if(af){af.classList.add('show');resetFirstOpt(af);}}
+}
+
+function resetFirstOpt(container){
+  var btns=container.querySelectorAll('.opt');
+  btns.forEach(function(b){b.classList.remove('on')});
+  if(btns[0]){btns[0].classList.add('on');btns[0].click();}
+}
+
+function selPill(btn,group,val){
+  btn.closest('.pill-row').querySelectorAll('.pill').forEach(function(b){b.classList.remove('on')});
+  btn.classList.add('on');S[group]=val;
+}
+
+function selGroup(btn,key,val){
+  var parent=btn.parentElement;
+  parent.querySelectorAll('.opt').forEach(function(b){b.classList.remove('on')});
+  btn.classList.add('on');S[key]=val;
+  if(key==='size'&&val==='custom'){var nb=document.getElementById('cbox-notebook');if(nb)nb.classList.add('show');}
+  else if(key==='size'){var nb2=document.getElementById('cbox-notebook');if(nb2)nb2.classList.remove('show');}
+  if(key==='textstyle'){var cb=document.getElementById('customTextBox');if(cb)cb.style.display=val==='custom'?'block':'none';}
+}
+
+function selStickerType(btn,val){
+  btn.closest('.g2').querySelectorAll('.opt').forEach(function(b){b.classList.remove('on')});
+  btn.classList.add('on');S.stickerType=val;
+  document.getElementById('sticker-individual-opts').style.display=val==='individual'?'block':'none';
+  document.getElementById('sticker-sheet-opts').style.display=val==='sheet'?'block':'none';
+  document.querySelectorAll('[id^="scene-sticker"]').forEach(function(d){d.classList.remove('show')});
+  document.querySelectorAll('[id^="action-sticker"]').forEach(function(d){d.classList.remove('show')});
+  if(val==='individual'){
+    var si=document.getElementById('scene-sticker-individual');var ai=document.getElementById('action-sticker-individual');
+    if(si){si.classList.add('show');resetFirstOpt(si);}if(ai){ai.classList.add('show');resetFirstOpt(ai);}
+  } else {
+    var ss=document.getElementById('scene-sticker-sheet');var as=document.getElementById('action-sticker-sheet');
+    if(ss){ss.classList.add('show');resetFirstOpt(ss);}if(as){as.classList.add('show');resetFirstOpt(as);}
+    document.getElementById('collection-opts').style.display='none';
+  }
+}
+
+function selPackPresentation(btn,val){
+  btn.closest('.g3').querySelectorAll('.opt').forEach(function(b){b.classList.remove('on')});
+  btn.classList.add('on');S.packPresentation=val;
+  document.getElementById('collection-opts').style.display=val==='transparent'?'block':'none';
+}
+
+function selSwatch(btn,color){
+  btn.closest('.swatch-row').querySelectorAll('.swatch').forEach(function(b){b.classList.remove('on')});
+  btn.classList.add('on');S.shirtColor=color;
+}
+
+function selChar(btn,val){
+  btn.closest('.g4').querySelectorAll('.opt').forEach(function(b){b.classList.remove('on')});
+  btn.classList.add('on');S.char=val;
+  document.getElementById('ethnicitySection').style.display=(val==='hands')?'none':'block';
+}
+
+function selSkin(btn,val){
+  btn.closest('.skin-row').querySelectorAll('.skin').forEach(function(b){b.classList.remove('on')});
+  btn.classList.add('on');S.skin=val;
+}
+
+function setUnit(u){
+  S.unit=u;
+  document.getElementById('btnIn').classList.toggle('on',u==='in');
+  document.getElementById('btnCm').classList.toggle('on',u==='cm');
+  convertSize();
+}
+
+function convertSize(){
+  var w=parseFloat(document.getElementById('cw').value);
+  var h=parseFloat(document.getElementById('ch').value);
+  var res=document.getElementById('cres');
+  if(!w||!h){res.classList.remove('show');return;}
+  if(S.unit==='cm'){S.customW=(w/2.54).toFixed(2);S.customH=(h/2.54).toFixed(2);res.textContent='✓ In inches: '+S.customW+' × '+S.customH+' inches';}
+  else{S.customW=w.toFixed(2);S.customH=h.toFixed(2);res.textContent='✓ Size: '+S.customW+' × '+S.customH+' inches';}
+  res.classList.add('show');S.size=S.customW+' x '+S.customH+' inches';
+}
+
+function generateNotebookCustom(){
+  var t=T[LANG];
+  var binding = S.nbBinding==='kdp'
+    ? 'PERFECT BOUND composition notebook — flat spine, absolutely NO spiral binding, NO wire-o, NO rings, NO coil'
+    : 'SPIRAL BOUND composition notebook with metal wire-o spiral on the left side';
+  var size = S.size;
+  var charDesc = getCharDesc();
+  var scene = S.scene;
+
+  var geminiPrompt =
+    'Hyper-realistic product photography of '+charDesc+'\'s hand actively writing with a pencil on an open notebook laying flat on '+scene+'.\n\n'+
+    'The open notebook is a '+binding+', measuring '+size+'.\n'+
+    'The notebook lies completely flat and open — two pages fully visible side by side.\n\n'+
+    'The open interior pages show EXACTLY the design from Image B (the second uploaded photo) — same illustrations, same colors, same layout, same style. Do NOT simplify, redesign or modify the interior pages in any way.\n\n'+
+    'The front cover of the notebook is leaning at the side, partially visible — reproduce it EXACTLY from Image A (the first uploaded photo) — same colors, same title, same characters, same design. Zero modifications.\n\n'+
+    'Camera: 85mm lens, shallow depth of field, warm natural daylight, DSLR, 8K.\n\n'+
+    'CRITICAL:\n'+
+    '— '+(S.nbBinding==='kdp'?'NO spiral binding anywhere in the image':'Metal spiral must be visible on left side of notebook')+'\n'+
+    '— Cover = Image A exact reproduction\n'+
+    '— Interior pages = Image B exact reproduction\n'+
+    '— Preserve both original designs 100%\n'+
+    '— ONE hand, ONE pencil, ONE notebook only';
+
+  var chatgptPrompt =
+    'Create an image based on these instructions:\n\n'+
+    'Ultra-realistic DSLR product photography, 85mm lens, f/1.8, 8K resolution, shallow depth of field, soft warm natural daylight.\n\n'+
+    'Scene: ONE '+binding+' ('+size+') is OPEN and lying completely flat on '+scene+'. The notebook is positioned like a real book — two pages fully visible side by side. The notebook is NOT closed and NOT standing.\n\n'+
+    'You will use TWO reference images:\n'+
+    '— Image A = the notebook FRONT COVER\n'+
+    '— Image B = the notebook INTERIOR PAGE DESIGN\n\n'+
+    'Interior pages: The TWO visible open pages must show EXACTLY the design from Image B. Preserve 100%: same characters, same illustrations, same text, same colors, same layout. DO NOT redraw, DO NOT reinterpret.\n\n'+
+    'Cover: Behind the open notebook, the front cover leans slightly upright, clearly showing Image A design. No modifications.\n\n'+
+    'Interaction: ONE realistic '+charDesc.toLowerCase()+'\'s hand gently holds a pencil and draws/writes on the right page only.\n\n'+
+    'BINDING: '+(S.nbBinding==='kdp'?'Perfect bound, flat spine. NO spiral, NO coil, NO rings.':'Spiral bound with metal wire-o on the left side.')+'\n\n'+
+    'CRITICAL: Only ONE notebook. Only ONE hand. Only ONE pencil. Image A = cover. Image B = interior pages. Preserve both 100%.';
+
+  // Show results with 2 special cards
+  var resultsEl = document.getElementById('results');
+  var geminiCard = document.querySelector('.pc-g');
+  var grokCard = document.querySelector('.pc-gr');
+  var mjCard = document.querySelector('.pc-mj');
+
+  // Update titles for custom interior context
+  var geminiTitle = document.querySelector('.pc-g .ptitle');
+  var geminiDesc = document.querySelector('.pc-g .pdesc');
+  var grokTitle = document.querySelector('.pc-gr .ptitle');
+  var grokDesc = document.querySelector('.pc-gr .pdesc');
+  var mjTitle = document.querySelector('.pc-mj .ptitle');
+  var mjDesc = document.querySelector('.pc-mj .pdesc');
+
+  if(geminiTitle) geminiTitle.textContent = LANG==='es' ? 'Para Gemini — Custom Interior' : 'For Gemini — Custom Interior';
+  if(geminiDesc) geminiDesc.textContent = LANG==='es' ? 'Sube Image A (portada) + Image B (página interior) + este prompt' : 'Upload Image A (cover) + Image B (interior page) + this prompt';
+  if(grokTitle) grokTitle.textContent = LANG==='es' ? 'Para ChatGPT — Custom Interior' : 'For ChatGPT — Custom Interior';
+  if(grokDesc) grokDesc.textContent = LANG==='es' ? 'Sube Image A + Image B y pega este prompt — ChatGPT generará la imagen' : 'Upload Image A + Image B and paste this prompt — ChatGPT will create the image';
+  if(mjTitle) mjTitle.textContent = LANG==='es' ? 'Para Midjourney — No aplica' : 'For Midjourney — Not applicable';
+  if(mjDesc) mjDesc.textContent = LANG==='es' ? 'Midjourney no soporta 2 imágenes de referencia para este caso. Usa Gemini o ChatGPT.' : 'Midjourney does not support 2 reference images for this case. Use Gemini or ChatGPT.';
+
+  document.getElementById('pt-gemini').textContent = geminiPrompt;
+  document.getElementById('pt-grok').textContent = chatgptPrompt;
+  document.getElementById('pt-mj').textContent = LANG==='es'
+    ? '⚠️ Para mockups con páginas internas personalizadas (Custom), Midjourney no puede usar 2 imágenes de referencia simultáneamente.\n\nRecomendación: Usa Gemini (mejor resultado) o ChatGPT con el prompt de arriba.\n\nSi quieres usar Midjourney, puedes usar la portada con --cref y describir la página interior en texto en el prompt.'
+    : '⚠️ For mockups with custom interior pages, Midjourney cannot use 2 reference images simultaneously.\n\nRecommendation: Use Gemini (best result) or ChatGPT with the prompt above.\n\nIf you want to use Midjourney, you can use the cover with --cref and describe the interior page in text within the prompt.';
+
+  showResults();
+}
+
+// ===================== PRODUCT DETAIL =====================
+function getProductDetail(){
+  var p=S.product;
+  if(p==='notebook'){
+    var binding = S.nbBinding==='kdp'
+      ? 'perfect bound composition notebook with a flat spine — NO spiral binding, NO wire-o, NO rings, NO coil'
+      : 'spiral bound composition notebook with a metal wire-o spiral on the left side';
+    return 'The product is a '+binding+', measuring '+S.size+' — real-life size, do NOT make it look oversized or like a poster.';
+  }
+  if(p==='book') return 'The product is a book measuring '+S.size+' — real-life size, do NOT make it look oversized or like a poster.';
+  if(p==='tshirt') return 'The product is a '+S.shirtColor+' Bella Canvas t-shirt brand '+S.brand+'.';
+  if(p==='hoodie') return 'The product is a '+S.shirtColor+' hoodie brand '+S.brand+'.';
+  if(p==='mug') return 'The product is a '+S.mugstyle+'.';
+  if(p==='sticker'){
+    if(S.stickerType==='individual') return 'The product is a '+S.stickerform+', size '+S.stickersize+'. Real physical sticker at accurate size, slight glossy finish.';
+    var pd='The product is a sticker sheet pack — ';
+    if(S.packPresentation==='flatlay') pd+='a flat sticker sheet showing all individual stickers clearly.';
+    else if(S.packPresentation==='transparent'){
+      pd+='a professional sticker pack inside a clear transparent packaging bag, like a retail product.';
+      var cn=document.getElementById('collectionName')?document.getElementById('collectionName').value.trim():'';
+      var ts=S.textstyle==='custom'?(document.getElementById('customTextStyle')?document.getElementById('customTextStyle').value.trim():''):S.textstyle;
+      if(cn) pd+=' The collection name "'+cn+'" appears as bold eye-catching typography on the pack with '+ts+'. The text looks like part of the product design, not a digital overlay.';
+    } else pd+='shown in a multi-scene: same sticker design simultaneously on a MacBook laptop lid, a white tumbler, and held between fingers — one cohesive lifestyle photo.';
+    return pd;
+  }
+  if(p==='totebag') return 'The product is a '+S.shirtColor+' tote bag.';
+  if(p==='candle') return 'The product is a '+S.candletype+'.';
+  return 'The product is a '+PROD_LABELS[p]+'.';
+}
+
+function getCharDesc(){
+  if(S.char==='hands') return 'A pair of hands';
+  var ages={girl:'5 to 8 year old',boy:'5 to 8 year old','teen-girl':'13 to 17 year old','teen-boy':'13 to 17 year old',woman:'adult',man:'adult'};
+  var genders={girl:'girl',boy:'boy','teen-girl':'girl','teen-boy':'boy',woman:'woman',man:'man'};
+  return 'A '+ages[S.char]+' '+S.ethnicity+' '+genders[S.char]+' with '+S.skin;
+}
+
+var CRITICAL='CRITICAL: Use the uploaded reference image as the exact product cover/design. Do NOT redesign, recolor, reinterpret, simplify or modify it in any way. Reproduce it exactly as uploaded. Preserve original artwork 100%.';
+
+// ===================== GENERATE =====================
+function generate(){
+  var t=T[LANG];
+  // Route to digital generator
+  if(S.product==='digital'){
+    generateDigital();
+    return;
+  }
+
+  // Special: Notebook + Writing + Custom interior
+  if(S.product==='notebook' && S.action==='writing' && S.interiorPage==='custom'){
+    generateNotebookCustom();
+    return;
+  }
+
+  if(S.product==='bundle'){
+    if(!S.bundleProducts||S.bundleProducts.length===0){alert(t.bundleAlert);return;}
+    var pl=S.bundleProducts.join(', ');
+    var bd='Hyper-realistic lifestyle product photography of a BUNDLE — the SAME design applied to all of the following products arranged together in one cohesive scene: '+pl+'.\n\nAll products must display the EXACT same design from the reference image. Arrange them naturally and attractively. Each product clearly visible at realistic proportions.\n\nSetting: '+S.scene+'.\nScene colors: '+S.palette+'.\n\nCamera: flat lay or slight angle, 85mm lens, soft natural light, DSLR quality, 8K resolution, ultra-detailed.\n\n'+CRITICAL;
+    var mjBd='Hyper-realistic lifestyle bundle photography, same design on '+pl+', all arranged in one scene, '+S.scene+', '+S.palette+', flat lay, 85mm lens, 8K, photorealistic --v 6.1 --ar 4:5 --q 2\n\n'+t.mjNote;
+    document.getElementById('pt-gemini').textContent=bd;
+    document.getElementById('pt-grok').textContent=bd;
+    document.getElementById('pt-mj').textContent=mjBd;
+    showResults();return;
+  }
+  var pd=getProductDetail();
+  var cd=getCharDesc();
+  var scene=S.scene,palette=S.palette;
+
+  // Build action string — for notebook writing with interior page selected
+  var action = S.action;
+  if(S.product==='notebook' && S.action==='writing'){
+    var binding = S.nbBinding==='kdp'
+      ? 'perfect bound, flat spine, NO spiral'
+      : 'spiral bound with metal wire-o on the left';
+    var interiorDesc = INTERIOR_PROMPTS[S.interiorPage] || 'lined pages';
+    action = 'actively writing with a pencil on an open notebook ('+binding+'). The open interior pages show '+interiorDesc+'. The front cover is leaning at the side, partially visible.';
+  }
+
+  var gChar=(S.char==='girl'||S.char==='boy')?'A pair of hands':cd;
+  var gp='Hyper-realistic professional product photography.\n'+gChar+' '+action+'.\n\nSetting: '+scene+'.\n'+pd+'\nScene colors: '+palette+'.\n\nCamera: 85mm lens, shallow depth of field, soft natural light, DSLR quality, 8K resolution.\n\n'+CRITICAL;
+  var grok='Hyper-realistic professional product photography.\n'+cd+' '+action+'.\n\nSetting: '+scene+'.\n'+pd+'\nScene colors: '+palette+'.\n\nCamera: 85mm lens, shallow depth of field, cinematic natural light, DSLR, 8K, ultra-detailed textures.\n\n'+CRITICAL;
+  var mj='Hyper-realistic product photography, '+cd+' '+action+', '+scene+', '+pd.replace(/\n/g,' ')+', '+palette+', 85mm lens, shallow depth of field, cinematic lighting, DSLR, 8K, photorealistic --v 6.1 --ar 4:5 --q 2\n\n'+t.mjNote;
+  document.getElementById('pt-gemini').textContent=gp;
+  document.getElementById('pt-grok').textContent=grok;
+  document.getElementById('pt-mj').textContent=mj;
+  showResults();
+}
+
+function showResults(){
+  var r=document.getElementById('results');
+  r.classList.add('show');
+  r.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// ===================== CLEAR =====================
+function clearAll(){
+  // reset product to notebook
+  var prodBtns=document.querySelectorAll('.g4 .opt');
+  prodBtns.forEach(function(b){b.classList.remove('on')});
+  if(prodBtns[0]) prodBtns[0].classList.add('on');
+  S.product='notebook';
+  // hide all dyn, show notebook defaults
+  document.querySelectorAll('.dyn').forEach(function(d){d.classList.remove('show')});
+  var dn=document.getElementById('dyn-notebook');if(dn) dn.classList.add('show');
+  var sn=document.getElementById('scene-notebook');if(sn){sn.classList.add('show');resetFirstOpt(sn);}
+  var an=document.getElementById('action-notebook');if(an){an.classList.add('show');resetFirstOpt(an);}
+  // reset platform
+  document.querySelectorAll('.pill').forEach(function(b){b.classList.remove('on')});
+  var pills=document.querySelectorAll('.pill');if(pills[0]) pills[0].classList.add('on');
+  S.platform='amazon';
+  // reset char
+  document.querySelectorAll('#ethnicitySection').forEach(function(e){e.style.display='none'});
+  var charBtns=document.querySelectorAll('[onclick*="selChar"]');
+  charBtns.forEach(function(b){b.classList.remove('on')});
+  if(charBtns[0]) charBtns[0].classList.add('on');
+  S.char='hands';
+  // reset palette
+  var palBtns=document.querySelectorAll('[onclick*="palette"]');
+  palBtns.forEach(function(b){b.classList.remove('on')});
+  if(palBtns[0]) palBtns[0].classList.add('on');
+  // reset bundle checkboxes
+  document.querySelectorAll('#bundleMenu input[type=checkbox]').forEach(function(c){c.checked=false;});
+  bundleAllSelected=false;
+  document.getElementById('bundleSelectedText').textContent='';
+  var bt=document.getElementById('bundleTriggerText');
+  bt.textContent=T[LANG].bundleChoose;bt.setAttribute('data-t','bundleChoose');
+  // reset custom size inputs
+  var cw=document.getElementById('cw');var ch=document.getElementById('ch');
+  if(cw) cw.value='';if(ch) ch.value='';
+  var cres=document.getElementById('cres');if(cres) cres.classList.remove('show');
+  var cbox=document.getElementById('cbox-notebook');if(cbox) cbox.classList.remove('show');
+  // reset collection name
+  var cn=document.getElementById('collectionName');if(cn) cn.value='';
+  document.getElementById('collection-opts').style.display='none';
+  document.getElementById('customTextBox').style.display='none';
+  // hide digital results and scene card
+  document.getElementById('digital-results').classList.remove('show');
+  var dsc = document.getElementById('digital-scene-card');
+  if(dsc) dsc.style.display='none';
+  S.device='laptop'; S.digitalHand='none';
+  // hide results
+  document.getElementById('results').classList.remove('show');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ===================== COPY =====================
+function cp(id,btn){
+  navigator.clipboard.writeText(document.getElementById(id).textContent).then(function(){
+    var orig=btn.innerHTML;
+    btn.innerHTML='✓ '+(LANG==='es'?'¡Copiado!':'Copied!');
+    setTimeout(function(){btn.innerHTML=orig;},2000);
+  });
+}
+</script>
+</body>
+</html>
